@@ -24,7 +24,7 @@ const CapTag = as === 'h1' ? 'h2' : 'h3';
           <article class:list={['pj', `pj-${(i % 6) + 1}`, 'reveal']} id={p.slug}>
             <Tag href={link ? href(pageUrl('projects', lang)) + '#' + p.slug : undefined} class="pj-link">
               <div class="pj-media">
-                <Photo stem={p.cover} lang={lang} widths={[480, 800, 1200]} sizes="(max-width: 899px) 100vw, 58vw" />
+                <Photo stem={p.cover} lang={lang} widths={[480, 800, 1200]} sizes="(max-width: 899px) 100vw, 50vw" loading={as === 'h1' && i === 0 ? 'eager' : 'lazy'} fetchpriority={as === 'h1' && i === 0 ? 'high' : undefined} />
               </div>
               <div class="pj-cap">
                 <span class="pj-n">{pad(p.n)}</span>
@@ -40,6 +40,7 @@ const CapTag = as === 'h1' ? 'h2' : 'h3';
     {showAll && (
       <div class="all reveal">
         <a class="btn ghost" href={href(pageUrl('projects', lang))}>{t(lang, 'projects.all')}</a>
+        <a class="btn ghost" href={href(pageUrl('gallery', lang))}>{t(lang, 'gallery.link')}</a>
       </div>
     )}
   </div>
@@ -70,7 +71,7 @@ const CapTag = as === 'h1' ? 'h2' : 'h3';
   .pj-6 { grid-column: 7 / 12; margin-top: clamp(24px, 5vw, 80px); }
   .pj-6 .pj-media { aspect-ratio: 4 / 5; }
 
-  .all { margin-top: var(--s5); }
+  .all { margin-top: var(--s5); display: flex; flex-wrap: wrap; gap: 12px; }
 
   @media (max-width: 899px) {
     .scatter { grid-template-columns: 1fr; gap: var(--s4); }

@@ -29,6 +29,7 @@ const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
         <ul>
           {services.map((s) => <li><a href={href(pageUrl('services', lang, s.slug[lang]))}>{s.name[lang]}</a></li>)}
           <li><a href={href(pageUrl('projects', lang))}>{t(lang, 'nav.projects')}</a></li>
+          <li><a href={href(pageUrl('gallery', lang))}>{t(lang, 'nav.gallery')}</a></li>
         </ul>
       </div>
 

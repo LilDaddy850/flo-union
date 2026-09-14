@@ -4,7 +4,7 @@ import ProjectsScatter from '../components/ProjectsScatter.astro';
 import PhotoGrid from '../components/PhotoGrid.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { projects, details } from '../data/projects';
-import { other, pageUrl, type Lang } from '../i18n/routes';
+import { href, other, pageUrl, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
 
 interface Props { lang: Lang; }
@@ -17,6 +17,7 @@ const meta = {
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('projects', lang)} altPath={pageUrl('projects', other(lang))}>
   <ProjectsScatter lang={lang} items={projects} link={false} as="h1" />
   <PhotoGrid lang={lang} stems={details} eyebrow={t(lang, 'projects.details')} title={t(lang, 'projects.detailsSub')} theme="light" />
+  <section class="theme-light more-link"><div class="wrap"><a class="btn ghost" href={href(pageUrl('gallery', lang))}>{t(lang, 'gallery.link')}</a></div></section>
   <CtaBand lang={lang} />
 </Base>
 
@@ -24,4 +25,5 @@ const meta = {
   .page-head { padding-block: var(--s6) 0; }
   .page-head .eyebrow { margin-bottom: var(--s3); }
   .page-head h1 { max-width: 14ch; }
+  .more-link { padding-block: 0 var(--s6); }
 </style>

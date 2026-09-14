@@ -8,6 +8,7 @@ export const routes = {
   home: { en: '/', es: '/es/' },
   services: { en: '/services/', es: '/es/servicios/' },
   projects: { en: '/projects/', es: '/es/proyectos/' },
+  gallery: { en: '/gallery/', es: '/es/galeria/' },
   area: { en: '/service-area/', es: '/es/areas-de-servicio/' },
   about: { en: '/about/', es: '/es/nosotros/' },
   contact: { en: '/contact/', es: '/es/contacto/' },

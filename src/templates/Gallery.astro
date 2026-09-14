@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { projects } from '../data/projects';
+import { photos } from '../lib/photos';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const meta = {
+  en: { title: 'Photo Gallery: Every Seamless Gutter Job | Flo Union LLC', description: 'Every photo from our seamless gutter jobs in Central Florida and Tampa, grouped by job: HOA communities, condos, new builds, tile roofs, bronze and white.' },
+  es: { title: 'Galería de fotos: cada trabajo de canaletas | Flo Union LLC', description: 'Todas las fotos de nuestras canaletas sin costura en Florida Central y Tampa, por trabajo: comunidades HOA, condominios, casas nuevas, techos de teja.' },
+}[lang];
+
+// Every processed photo, grouped by job: the stem prefix (hoa, bronze, tile...) ties a photo to the project whose cover shares it.
+const prefix = (stem: string) => stem.replace(/-\d+$/, '');
+const allStems = Object.keys(photos).sort();
+const used = new Set<string>();
+type Group = { key: string; eyebrow: string; title: string; stems: string[] };
+const groups: Group[] = [];
+for (const p of [...projects].sort((a, b) => a.n - b.n)) {
+  const pre = prefix(p.cover);
+  const stems = allStems.filter((s) => prefix(s) === pre);
+  stems.sort((a, b) => (a === p.cover ? -1 : b === p.cover ? 1 : a.localeCompare(b)));
+  for (const s of stems) used.add(s);
+  if (stems.length) groups.push({ key: p.slug, eyebrow: `${String(p.n).padStart(2, '0')} · ${p.where[lang]}`, title: p.title[lang], stems });
+}
+const details = allStems.filter((s) => s.startsWith('detail-'));
+for (const s of details) used.add(s);
+if (details.length) groups.push({ key: 'details', eyebrow: t(lang, 'projects.details'), title: t(lang, 'gallery.detailsTitle'), stems: details });
+const rest = allStems.filter((s) => !used.has(s));
+if (rest.length) groups.push({ key: 'more', eyebrow: t(lang, 'gallery.moreEyebrow'), title: t(lang, 'gallery.moreTitle'), stems: rest });
+const total = allStems.length;
+const fullM = (i: number) => i % 6 === 0 || i % 6 === 5;
+const fullD = (i: number) => i % 6 === 0 || i % 6 === 3 || i % 6 === 4;
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('gallery', lang)} altPath={pageUrl('gallery', other(lang))}>
+  <section class="section theme-dark page-head">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'gallery.eyebrow')} · {t(lang, 'gallery.count', { n: String(total) })}</p>
+      <h1 class="h-hero">{t(lang, 'gallery.title')}</h1>
+      <p class="lead">{t(lang, 'gallery.sub')}</p>
+      <nav class="jump" aria-label={t(lang, 'gallery.jump')}>
+        {groups.map((g) => <a href={'#' + g.key}>{g.title}</a>)}
+      </nav>
+    </div>
+  </section>
+  {groups.map((g, gi) => (
+    <section class:list={['section', 'group', gi % 2 === 0 ? 'theme-light' : 'theme-dark']} id={g.key}>
+      <div class="wrap">
+        <div class="group-head reveal">
+          <p class="eyebrow">{g.eyebrow} · {t(lang, 'gallery.count', { n: String(g.stems.length) })}</p>
+          <h2 class="h-2">{g.title}</h2>
+        </div>
+        <div class="grid">
+          {g.stems.map((s, i) => (
+            <figure class:list={['cell reveal', i % 3 === 1 && 'reveal-d1', i % 3 === 2 && 'reveal-d2']}>
+              <Photo stem={s} lang={lang} widths={[400, 640, 960, 1280]} sizes={'(max-width: 899px) ' + (fullM(i) ? '100vw' : '50vw') + ', ' + (fullD(i) ? '62vw' : '31vw')} loading={gi === 0 && i === 0 ? 'eager' : 'lazy'} />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .page-head { padding-block: var(--s6) var(--s5); }
+  .page-head .eyebrow { margin-bottom: var(--s3); }
+  .page-head h1 { max-width: 14ch; }
+  .page-head .lead { margin-top: var(--s3); }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: var(--s4); }
+  .jump a { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); padding: 8px 0; border-bottom: 1px solid transparent; transition: color 0.2s var(--ease), border-color 0.2s var(--ease); }
+  .jump a:hover { color: var(--text-light); border-color: var(--orange); }
+  .group { padding-block: var(--s5); scroll-margin-top: 90px; }
+  .group-head { margin-bottom: var(--s4); }
+  .group-head .eyebrow { margin-bottom: var(--s2); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); }
+  .cell { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 3; background: var(--surface); margin: 0; }
+  .cell :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+  .cell:hover :global(img) { transform: scale(1.04); }
+  .cell:nth-child(6n + 1), .cell:nth-child(6n + 4), .cell:nth-child(6n + 5) { grid-column: span 2; aspect-ratio: 3 / 2; }
+  @media (max-width: 899px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: var(--s2); }
+    .cell:nth-child(n) { grid-column: auto; aspect-ratio: 4 / 3; }
+    .cell:nth-child(6n + 1), .cell:nth-child(6n) { grid-column: span 2; aspect-ratio: 3 / 2; }
+  }
+</style>

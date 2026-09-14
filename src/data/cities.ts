@@ -61,7 +61,7 @@ export const cities: City[] = [
   ], photos: ['siding-01', 'brick-03', 'ranch-palm', 'newbuild-08', 'detail-corner', 'colonial-02'] },
   { slug: 'lakeland', name: 'Lakeland', county: 'Polk', lines: [
     { en: 'Lakeland gets the full summer storm season. Gutters that do not overflow are the whole point.', es: 'Lakeland recibe toda la temporada de tormentas de verano. Aquí lo que importa es que las canaletas no se desborden.' },
-    { en: 'Six-inch seamless moves more water than the five-inch most houses came with.', es: 'Las de 6 pulgadas sin costura mueven más agua que las de 5 con las que vienen la mayoría de las casas.' },
+    { en: 'Six-inch seamless moves almost twice as much water as the five-inch most houses came with.', es: 'Las de 6 pulgadas sin costura mueven casi el doble de agua que las de 5 con las que vienen la mayoría de las casas.' },
   ], photos: ['newbuild-04', 'brick-04', 'siding-02', 'hoa-04', 'detail-downspout', 'tile-03'] },
   { slug: 'the-villages', name: 'The Villages', county: 'Sumter', lines: [
     { en: 'The Villages has newer homes and clear standards. We match colors and keep the job clean.', es: 'The Villages tiene casas nuevas y estándares claros. Igualamos colores y mantenemos el trabajo limpio.' },

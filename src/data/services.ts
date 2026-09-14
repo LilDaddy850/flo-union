@@ -49,7 +49,7 @@ export const services: Service[] = [
       },
       {
         q: { en: 'Why 6-inch gutters?', es: '¿Por qué canaletas de 6 pulgadas?' },
-        a: { en: 'A 6-inch gutter moves more water than a 5-inch, and Florida rain comes down hard. It is what we run on every job.', es: 'Una canaleta de 6 pulgadas mueve más agua que una de 5, y la lluvia en Florida cae fuerte. Es lo que usamos en cada trabajo.' },
+        a: { en: 'A 6-inch gutter moves almost twice as much water as a 5-inch, and Florida rain comes down hard. It is what we run on every job.', es: 'Una canaleta de 6 pulgadas mueve casi el doble de agua que una de 5, y la lluvia en Florida cae fuerte. Es lo que usamos en cada trabajo.' },
       },
       {
         q: { en: 'Where do the downspouts go?', es: '¿Dónde van los bajantes?' },
