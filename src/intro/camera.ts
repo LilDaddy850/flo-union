@@ -4,21 +4,23 @@ import type { HouseParts } from './house';
 export type Paths = { a: THREE.CatmullRomCurve3; la: THREE.CatmullRomCurve3; b: THREE.CatmullRomCurve3; lb: THREE.CatmullRomCurve3; approach: THREE.CatmullRomCurve3; tunnel: THREE.CatmullRomCurve3 };
 
 /**
- * Beats: 0 wide storm shot · 0.5 close above the gutter, water running to the outlet · 0.72–0.8 nose into the outlet · 0.83–0.96 riding down the pipe.
+ * Beats: 0 wide storm shot · 0.5 the corner: gutter with water, the whole downspout, water leaving at the bottom ·
+ * 0.72–0.82 nose into the outlet · 0.83–0.96 riding down the pipe.
  */
 export function makeBeats(h: HouseParts, portrait: boolean): Paths {
   const o = h.outlet;
   const ch = h.gutterChannel;
+  const land = h.downspoutCurve.getPointAt(1);
   const pos = portrait
-    ? [new THREE.Vector3(-6, 4.6, 24), new THREE.Vector3(-3, 4.8, 13), new THREE.Vector3(o.x - 1.9, ch.y + 1.0, ch.z + 1.15), new THREE.Vector3(o.x - 0.3, o.y + 0.36, o.z + 0.42)]
-    : [new THREE.Vector3(-15.5, 4.4, 16), new THREE.Vector3(-5, 4.8, 11), new THREE.Vector3(o.x - 1.9, ch.y + 0.8, ch.z + 1.05), new THREE.Vector3(o.x - 0.32, o.y + 0.34, o.z + 0.42)];
+    ? [new THREE.Vector3(-6, 4.6, 24), new THREE.Vector3(-3, 4.8, 13), new THREE.Vector3(o.x - 1.7, ch.y + 2.5, ch.z + 3.0), new THREE.Vector3(o.x - 0.3, o.y + 0.36, o.z + 0.42)]
+    : [new THREE.Vector3(-15.5, 4.4, 16), new THREE.Vector3(-5, 4.8, 11), new THREE.Vector3(o.x - 2.7, ch.y + 2.4, ch.z + 2.9), new THREE.Vector3(o.x - 0.32, o.y + 0.34, o.z + 0.42)];
   const look = portrait
-    ? [new THREE.Vector3(0.3, 2.4, 0), new THREE.Vector3(1.5, 3.0, 2), new THREE.Vector3(o.x - 0.2, ch.y - 0.3, ch.z - 0.05), new THREE.Vector3(o.x, o.y - 0.08, o.z)]
-    : [new THREE.Vector3(1.2, 2.5, 0), new THREE.Vector3(1.5, 3.0, 2.5), new THREE.Vector3(o.x - 0.1, ch.y - 0.25, ch.z - 0.05), new THREE.Vector3(o.x, o.y - 0.08, o.z)];
+    ? [new THREE.Vector3(0.3, 2.4, 0), new THREE.Vector3(1.5, 3.0, 2), new THREE.Vector3(o.x - 0.2, ch.y - 1.05, land.z * 0.55 + ch.z * 0.45), new THREE.Vector3(o.x, o.y - 0.08, o.z)]
+    : [new THREE.Vector3(1.2, 2.5, 0), new THREE.Vector3(1.5, 3.0, 2.5), new THREE.Vector3(o.x - 0.2, ch.y - 1.0, land.z * 0.55 + ch.z * 0.45), new THREE.Vector3(o.x, o.y - 0.08, o.z)];
   const a = new THREE.CatmullRomCurve3([pos[0], pos[1], pos[2]], false, 'centripetal');
   const la = new THREE.CatmullRomCurve3([look[0], look[1], look[2]], false, 'centripetal');
-  const b = new THREE.CatmullRomCurve3([pos[2], pos[3]], false, 'centripetal');
-  const lb = new THREE.CatmullRomCurve3([look[2], look[3]], false, 'centripetal');
+  const b = new THREE.CatmullRomCurve3([pos[2], new THREE.Vector3(o.x - 1.2, o.y + 0.9, o.z + 1.4), pos[3]], false, 'centripetal');
+  const lb = new THREE.CatmullRomCurve3([look[2], new THREE.Vector3(o.x - 0.4, o.y - 0.3, o.z), look[3]], false, 'centripetal');
   const c = h.downspoutCurve;
   const approach = new THREE.CatmullRomCurve3([pos[3], new THREE.Vector3(o.x, o.y + 0.02, o.z)], false, 'centripetal');
   const tunnel = c; // ride the real centreline

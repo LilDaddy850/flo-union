@@ -5,7 +5,7 @@ import { createStage } from './scene';
 import { buildHouse } from './house';
 import { makeBeats, placeCamera } from './camera';
 import { createRain } from './rain';
-import { createGutterWater, createDownspoutWater, createEaveSheet, createSplashes } from './water';
+import { createGutterWater, createDownspoutWater, createEaveSheet, createSplashes, createOutflow } from './water';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +27,8 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
   const tubeWater = createDownspoutWater(house);
   const sheet = createEaveSheet(house);
   const splashes = createSplashes(house, phone ? 100 : 160);
-  stage.scene.add(rain.mesh, water.mesh, tubeWater.mesh, sheet.mesh, splashes.mesh);
+  const outflow = createOutflow(house, phone);
+  stage.scene.add(rain.mesh, water.mesh, tubeWater.mesh, sheet.mesh, splashes.mesh, outflow.group);
   const gutterHomeX = house.gutter.position.x;
   const baseFov = () => (canvas.clientHeight > canvas.clientWidth ? 56 : 42);
 
@@ -41,6 +42,21 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
   const state = { t: 0 };
   let locked = false;
 
+  // CSS smooth scrolling fights ScrollTrigger's snap tween (worst on iOS Safari): keep native scrolling instant while the intro exists.
+  const html = document.documentElement;
+  const prevScrollBehavior = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+
+  const BEATS = [0, 0.5, 1];
+  let restBeat = 0;
+  // Pure: the beat we last rested on decides the target; it only advances once a snap has actually finished,
+  // so a hard flick (or several snap evaluations in a row) can never skip a beat.
+  const snapTarget = (value: number): number => {
+    if (value > restBeat + 0.04) return BEATS.find((b) => b > restBeat) ?? 1;
+    if (value < restBeat - 0.04) return [...BEATS].reverse().find((b) => b < restBeat) ?? 0;
+    return restBeat;
+  };
+  const settle = (progress: number) => { restBeat = BEATS.reduce((a, b) => (Math.abs(b - progress) < Math.abs(a - progress) ? b : a), 0); };
   ScrollTrigger.config({ ignoreMobileResize: true });
   const tl = gsap.timeline({
     scrollTrigger: {
@@ -48,9 +64,13 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
       start: 'top top',
       end: 'bottom bottom',
       scrub: 0.6,
-      snap: { snapTo: 'labels', duration: { min: 0.25, max: 0.7 }, delay: 0.05, ease: 'power2.inOut', directional: true },
+      // Deterministic snapping: a forward flick always lands on the NEXT beat, a backward one on the PREVIOUS beat,
+      // judged against the beat we last rested on, never from momentary scroll velocity (which can read backwards on
+      // iOS momentum scrolling and throw the visitor back to the top).
+      snap: { snapTo: (value: number) => snapTarget(value), duration: { min: 0.3, max: 0.8 }, delay: 0.12, ease: 'power2.inOut', onComplete: (self) => settle(self.progress) },
+      onLeave: () => settle(1),
+      onLeaveBack: () => settle(0),
       invalidateOnRefresh: true,
-      onToggle: (self) => { document.documentElement.style.scrollBehavior = self.isActive ? 'auto' : ''; },
     },
   });
   const proxy = { t: 0 };
@@ -70,13 +90,16 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
   const setOpacity = (el: HTMLElement | null | undefined, v: number) => { if (el) el.style.opacity = v.toFixed(3); };
 
   const applyStory = (t: number, dive: number, tunnel: number) => {
-    // the gutter slides in along the eave in one piece, the sheeting stops, the channel fills
+    // the gutter slides in along the eave in one piece, the sheeting stops, the channel fills, water leaves the downspout
     const slide = smooth(0.2, 0.43, t);
     house.gutter.position.x = gutterHomeX - (1 - slide) * (house.gutterLength + 5);
     const sheetA = 1 - smooth(0.36, 0.5, t);
     sheet.uniforms.uAlpha.value = sheetA;
     splashes.uniforms.uAlpha.value = sheetA;
     water.uniforms.uFill.value = smooth(0.44, 0.58, t);
+    const out = smooth(0.4, 0.5, t);
+    for (const u of outflow.uniforms) u.uFill.value = out;
+    outflow.splashes.uniforms.uAlpha.value = out;
     lamp.intensity = tunnel > 0 ? 2.4 : dive * 0.8;
     setOpacity(overlays.cap1, pulse(0.02, 0.1, 0.16, 0.26, t));
     setOpacity(overlays.hint, 1 - smooth(0.01, 0.06, t));
@@ -91,13 +114,15 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
     timer.update();
     const time = timer.getElapsed();
     const { dive, tunnel } = placeCamera(stage.camera, paths, state.t, time);
-    const fov = baseFov() + tunnel * 28;
+    const fov = baseFov() + tunnel * 28 + 7 * pulse(0.3, 0.46, 0.54, 0.7, state.t);
     if (Math.abs(stage.camera.fov - fov) > 0.01) { stage.camera.fov = fov; stage.camera.updateProjectionMatrix(); }
     applyStory(state.t, dive, tunnel);
     stage.camera.updateMatrixWorld();
     rain.update(time, stage.camera);
     water.uniforms.uTime.value = time;
     tubeWater.uniforms.uTime.value = time;
+    for (const u of outflow.uniforms) u.uTime.value = time;
+    outflow.splashes.uniforms.uTime.value = time;
     sheet.uniforms.uTime.value = time;
     splashes.uniforms.uTime.value = time;
     stage.renderer.render(stage.scene, stage.camera);
@@ -109,12 +134,30 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
   stage.camera.updateMatrixWorld();
   stage.renderer.compileAsync(stage.scene, stage.camera).then(loop, loop);
 
-  const ro = new ResizeObserver(() => { stage.resize(); paths = makeBeats(house, portrait()); ScrollTrigger.refresh(); });
+  // Resize: the renderer and camera always follow the canvas. ScrollTrigger is only refreshed when the WIDTH changes
+  // (orientation / window resize). Height-only changes are the phone browser toolbar showing and hiding mid-scroll;
+  // refreshing then restores a stale scroll position and throws the visitor back up the page (seen on iOS Safari).
+  let lastW = canvas.clientWidth;
+  let refreshTimer = 0;
+  const ro = new ResizeObserver(() => {
+    stage.resize();
+    paths = makeBeats(house, portrait());
+    const w = canvas.clientWidth;
+    if (w !== lastW) {
+      lastW = w;
+      clearTimeout(refreshTimer);
+      refreshTimer = window.setTimeout(() => { if (!ScrollTrigger.isScrolling()) ScrollTrigger.refresh(); }, 250);
+    }
+  });
   ro.observe(canvas);
 
   return {
     state,
     setT: (t) => { locked = true; state.t = t; },
-    destroy: () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); tl.scrollTrigger?.kill(); tl.kill(); stage.dispose(); },
+    destroy: () => {
+      cancelAnimationFrame(raf); clearTimeout(refreshTimer); ro.disconnect(); io.disconnect();
+      tl.scrollTrigger?.kill(); tl.kill(); stage.dispose();
+      html.style.scrollBehavior = prevScrollBehavior;
+    },
   };
 }

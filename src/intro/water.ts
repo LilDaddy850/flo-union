@@ -9,24 +9,29 @@ const noiseGlsl = /* glsl */ `
   }
 `;
 
-export type WaterUniforms = { uTime: { value: number }; uFill: { value: number }; uScale: { value: number }; uSpeed: { value: number }; uEdge: { value: number } };
+export type WaterUniforms = {
+  uTime: { value: number }; uFill: { value: number }; uScale: { value: number }; uSpeed: { value: number }; uEdge: { value: number }; uFadeEnd: { value: number }; uWobble: { value: number };
+};
 
 /** Stylized flowing water: scrolling noise, foam streaks at the edges. uv.x is the flow direction. */
-export function makeWaterMaterial(opts: { scale?: number; speed?: number; fill?: number; edge?: number } = {}): { material: THREE.ShaderMaterial; uniforms: WaterUniforms } {
-  const uniforms: WaterUniforms = { uTime: { value: 0 }, uFill: { value: opts.fill ?? 0 }, uScale: { value: opts.scale ?? 1 }, uSpeed: { value: opts.speed ?? 1 }, uEdge: { value: opts.edge ?? 1 } };
+export function makeWaterMaterial(opts: { scale?: number; speed?: number; fill?: number; edge?: number; fadeEnd?: number; wobble?: number } = {}): { material: THREE.ShaderMaterial; uniforms: WaterUniforms } {
+  const uniforms: WaterUniforms = {
+    uTime: { value: 0 }, uFill: { value: opts.fill ?? 0 }, uScale: { value: opts.scale ?? 1 }, uSpeed: { value: opts.speed ?? 1 },
+    uEdge: { value: opts.edge ?? 1 }, uFadeEnd: { value: opts.fadeEnd ?? 0 }, uWobble: { value: opts.wobble ?? 1 },
+  };
   const material = new THREE.ShaderMaterial({
     uniforms,
     vertexShader: /* glsl */ `
-      uniform float uTime; uniform float uFill; varying vec2 vUv;
+      uniform float uTime; uniform float uFill; uniform float uWobble; varying vec2 vUv;
       void main() {
         vUv = uv;
         vec3 p = position;
         p.z *= uFill;
-        p.y += (0.006 * sin(p.x * 11.0 + uTime * 7.0) + 0.004 * sin(p.x * 23.0 - uTime * 9.0)) * uFill;
+        p.y += (0.004 * sin(p.x * 11.0 + uTime * 7.0) + 0.0025 * sin(p.x * 23.0 - uTime * 9.0)) * uFill * uWobble;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uTime; uniform float uFill; uniform float uScale; uniform float uSpeed; uniform float uEdge; varying vec2 vUv;
+      uniform float uTime; uniform float uFill; uniform float uScale; uniform float uSpeed; uniform float uEdge; uniform float uFadeEnd; varying vec2 vUv;
       ${noiseGlsl}
       void main() {
         float t = uTime * uSpeed;
@@ -38,7 +43,9 @@ export function makeWaterMaterial(opts: { scale?: number; speed?: number; fill?:
         float edge = abs(vUv.y - 0.5) * 2.0 * uEdge;
         float foam = smoothstep(0.55, 0.72, n3) * (0.35 + 0.65 * edge) + smoothstep(0.66, 0.8, n2) * 0.5;
         col = mix(col, foamC, clamp(foam, 0.0, 1.0));
-        gl_FragColor = vec4(col, 0.96 * smoothstep(0.0, 0.15, uFill));
+        float a = 0.96 * smoothstep(0.0, 0.15, uFill);
+        a *= mix(1.0, 1.0 - smoothstep(0.45, 1.0, vUv.x), uFadeEnd);
+        gl_FragColor = vec4(col, a);
       }`,
     transparent: true,
     depthWrite: false,
@@ -48,14 +55,14 @@ export function makeWaterMaterial(opts: { scale?: number; speed?: number; fill?:
 
 export type GutterWater = { mesh: THREE.Mesh; uniforms: WaterUniforms };
 
-/** Water strip inside the gutter channel. uFill 0..1 widens it from nothing to full. Flow runs toward +x (the outlet). */
+/** Water strip inside the gutter channel, about a third full. uFill 0..1 widens it from nothing. Flow runs toward +x (the outlet). */
 export function createGutterWater(h: HouseParts): GutterWater {
   const len = h.gutterChannel.x1 - h.gutterChannel.x0 - 0.06;
-  const geo = new THREE.PlaneGeometry(len, 0.118, 220, 2);
+  const geo = new THREE.PlaneGeometry(len, 0.098, 220, 2);
   geo.rotateX(-Math.PI / 2);
   const { material, uniforms } = makeWaterMaterial({ scale: 1, speed: 1 });
   const mesh = new THREE.Mesh(geo, material);
-  mesh.position.set((h.gutterChannel.x0 + h.gutterChannel.x1) / 2, h.gutterTopY - 0.118 + 0.082, h.gutterChannel.z);
+  mesh.position.set((h.gutterChannel.x0 + h.gutterChannel.x1) / 2, h.gutterTopY - 0.118 + 0.046, h.gutterChannel.z);
   mesh.renderOrder = 2;
   return { mesh, uniforms };
 }
@@ -63,11 +70,41 @@ export function createGutterWater(h: HouseParts): GutterWater {
 /** Water riding down inside the downspout (seen during the dive). */
 export function createDownspoutWater(h: HouseParts): GutterWater {
   const geo = new THREE.TubeGeometry(h.downspoutCurve, 200, 0.05, 16, false);
-  const { material, uniforms } = makeWaterMaterial({ scale: 6, speed: 2.2, fill: 1, edge: 0 });
+  const { material, uniforms } = makeWaterMaterial({ scale: 6, speed: 2.2, fill: 1, edge: 0, wobble: 0 });
   material.side = THREE.DoubleSide;
   const mesh = new THREE.Mesh(geo, material);
   mesh.renderOrder = 2;
   return { mesh, uniforms };
+}
+
+export type Outflow = { group: THREE.Group; uniforms: WaterUniforms[]; splashes: Splashes; landing: THREE.Vector3 };
+
+/** Water leaving the downspout: a jet from the bottom elbow, a splash where it lands, and a stream running away from the house. */
+export function createOutflow(h: HouseParts, phone: boolean): Outflow {
+  const group = new THREE.Group();
+  const end = h.downspoutCurve.getPointAt(1);
+  const dir = h.downspoutCurve.getTangentAt(1).normalize(); // points away from the house along +z
+  const drops = [0, 0.005, 0.03, 0.07, 0.1];
+  const jetPts = [0, 0.1, 0.2, 0.3, 0.38].map((d, i) => new THREE.Vector3(end.x + dir.x * d, Math.max(0.012, end.y - drops[i]), end.z + dir.z * d));
+  const jetCurve = new THREE.CatmullRomCurve3(jetPts, false, 'centripetal');
+  const jet = makeWaterMaterial({ scale: 2.5, speed: 2.4, edge: 0, wobble: 0 });
+  const jetMesh = new THREE.Mesh(new THREE.TubeGeometry(jetCurve, 24, 0.03, 10, false), jet.material);
+  jetMesh.renderOrder = 2;
+  group.add(jetMesh);
+  const landing = jetPts[jetPts.length - 1].clone();
+  // stream on the ground, fading out
+  const streamLen = 1.5, streamW = 0.26;
+  const streamGeo = new THREE.PlaneGeometry(streamLen, streamW, 60, 2);
+  streamGeo.rotateX(-Math.PI / 2);
+  streamGeo.rotateY(-Math.PI / 2); // uv.x (flow) now runs along +z
+  const stream = makeWaterMaterial({ scale: 0.8, speed: 1.2, fadeEnd: 1, wobble: 0 });
+  const streamMesh = new THREE.Mesh(streamGeo, stream.material);
+  streamMesh.position.set(landing.x, 0.012, landing.z + streamLen / 2 - 0.1);
+  streamMesh.renderOrder = 1;
+  group.add(streamMesh);
+  const splashes = createSplashes(h, phone ? 28 : 44, { x0: landing.x - 0.16, x1: landing.x + 0.16, z0: landing.z - 0.12, z1: landing.z + 0.3 }, 0.18);
+  group.add(splashes.mesh);
+  return { group, uniforms: [jet.uniforms, stream.uniforms], splashes, landing };
 }
 
 export type EaveSheet = { mesh: THREE.Mesh; uniforms: { uTime: { value: number }; uAlpha: { value: number } } };
@@ -106,16 +143,18 @@ export function createEaveSheet(h: HouseParts): EaveSheet {
 }
 
 export type Splashes = { mesh: THREE.Mesh; uniforms: { uTime: { value: number }; uAlpha: { value: number } } };
+type Region = { x0: number; x1: number; z0: number; z1: number };
 
-/** Splash rings where the roof water hits the ground along the front of the house. */
-export function createSplashes(h: HouseParts, count = 160): Splashes {
+/** Splash rings. Default region: along the front of the house where roof water lands. */
+export function createSplashes(h: HouseParts, count = 160, region?: Region, maxSize = 0.3): Splashes {
+  const r: Region = region ?? { x0: h.gutterChannel.x0, x1: h.gutterChannel.x1, z0: h.eaveZ - 0.2, z1: h.eaveZ + 0.3 };
   const base = new THREE.RingGeometry(0.6, 1, 14);
   base.rotateX(-Math.PI / 2);
   const geo = new THREE.InstancedBufferGeometry();
   geo.index = base.index; geo.attributes.position = base.attributes.position; geo.attributes.uv = base.attributes.uv;
   const offsets = new Float32Array(count * 3), seeds = new Float32Array(count);
   for (let i = 0; i < count; i++) {
-    offsets.set([h.gutterChannel.x0 + Math.random() * (h.gutterChannel.x1 - h.gutterChannel.x0), 0.02, h.eaveZ + 0.05 + (Math.random() - 0.5) * 0.5], i * 3);
+    offsets.set([r.x0 + Math.random() * (r.x1 - r.x0), 0.02, r.z0 + Math.random() * (r.z1 - r.z0)], i * 3);
     seeds[i] = Math.random();
   }
   geo.setAttribute('aOffset', new THREE.InstancedBufferAttribute(offsets, 3));
@@ -123,13 +162,13 @@ export function createSplashes(h: HouseParts, count = 160): Splashes {
   geo.instanceCount = count;
   const uniforms = { uTime: { value: 0 }, uAlpha: { value: 1 } };
   const mat = new THREE.ShaderMaterial({
-    uniforms,
+    uniforms: { uTime: uniforms.uTime, uAlpha: uniforms.uAlpha, uMax: { value: maxSize } },
     vertexShader: /* glsl */ `
-      attribute vec3 aOffset; attribute float aSeed; uniform float uTime; varying float vLife;
+      attribute vec3 aOffset; attribute float aSeed; uniform float uTime; uniform float uMax; varying float vLife;
       void main() {
         float life = fract(uTime * (1.4 + aSeed * 0.8) + aSeed * 7.0);
         vLife = life;
-        float s = 0.04 + 0.26 * life;
+        float s = 0.04 + (uMax - 0.04) * life;
         vec3 p = aOffset + position * s;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }`,
