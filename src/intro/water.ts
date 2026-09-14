@@ -142,6 +142,36 @@ export function createEaveSheet(h: HouseParts): EaveSheet {
   return { mesh, uniforms };
 }
 
+/** Water sheeting off the roof drip edge into the gutter channel, along the whole front. Shares the eave-sheet look. */
+export function createRoofRunoff(h: HouseParts): EaveSheet {
+  const height = 0.2;
+  const geo = new THREE.PlaneGeometry(h.gutterLength - 0.1, height, 1, 1);
+  const uniforms = { uTime: { value: 0 }, uAlpha: { value: 0 } };
+  const mat = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: /* glsl */ `
+      uniform float uTime; uniform float uAlpha; varying vec2 vUv;
+      ${noiseGlsl}
+      void main() {
+        float col1 = noise(vec2(vUv.x * 260.0, 0.5));
+        float col2 = noise(vec2(vUv.x * 420.0 + 9.0, 0.5));
+        float fall1 = noise(vec2(vUv.x * 260.0, vUv.y * 3.0 + uTime * 3.0));
+        float fall2 = noise(vec2(vUv.x * 420.0 + 9.0, vUv.y * 5.0 + uTime * 4.4));
+        float thread = smoothstep(0.5, 0.75, col1) * smoothstep(0.3, 0.7, fall1) + smoothstep(0.6, 0.82, col2) * smoothstep(0.35, 0.75, fall2) * 0.8;
+        float a = thread * 0.7 + 0.35 * smoothstep(0.85, 1.0, vUv.y);
+        a *= smoothstep(0.0, 0.25, vUv.y);
+        gl_FragColor = vec4(vec3(0.74, 0.84, 0.98), a * uAlpha * 0.9);
+      }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  // from just under the drip edge down into the channel, over the back half of the gutter
+  mesh.position.set(0, h.gutterTopY + height / 2 - 0.05, h.eaveZ + 0.05);
+  mesh.renderOrder = 2;
+  return { mesh, uniforms };
+}
+
 export type Splashes = { mesh: THREE.Mesh; uniforms: { uTime: { value: number }; uAlpha: { value: number } } };
 type Region = { x0: number; x1: number; z0: number; z1: number };
 

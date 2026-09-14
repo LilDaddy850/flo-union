@@ -5,7 +5,7 @@ import { createStage } from './scene';
 import { buildHouse } from './house';
 import { makeBeats, placeCamera } from './camera';
 import { createRain } from './rain';
-import { createGutterWater, createDownspoutWater, createEaveSheet, createSplashes, createOutflow } from './water';
+import { createGutterWater, createDownspoutWater, createEaveSheet, createSplashes, createOutflow, createRoofRunoff } from './water';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +28,12 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
   const sheet = createEaveSheet(house);
   const splashes = createSplashes(house, phone ? 100 : 160);
   const outflow = createOutflow(house, phone);
-  stage.scene.add(rain.mesh, water.mesh, tubeWater.mesh, sheet.mesh, splashes.mesh, outflow.group);
+  const runoff = createRoofRunoff(house);
+  stage.scene.add(rain.mesh, water.mesh, tubeWater.mesh, sheet.mesh, splashes.mesh, outflow.group, runoff.mesh);
+  // everything the gutter brings with it rides in the gutter group so the whole assembly slides in as one piece
+  house.gutter.attach(tubeWater.mesh);
+  house.gutter.attach(outflow.group);
+  house.gutter.attach(water.mesh);
   const gutterHomeX = house.gutter.position.x;
   const baseFov = () => (canvas.clientHeight > canvas.clientWidth ? 56 : 42);
 
@@ -97,6 +102,7 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
     sheet.uniforms.uAlpha.value = sheetA;
     splashes.uniforms.uAlpha.value = sheetA;
     water.uniforms.uFill.value = smooth(0.44, 0.58, t);
+    runoff.uniforms.uAlpha.value = smooth(0.43, 0.55, t);
     const out = smooth(0.4, 0.5, t);
     for (const u of outflow.uniforms) u.uFill.value = out;
     outflow.splashes.uniforms.uAlpha.value = out;
@@ -124,6 +130,7 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
     for (const u of outflow.uniforms) u.uTime.value = time;
     outflow.splashes.uniforms.uTime.value = time;
     sheet.uniforms.uTime.value = time;
+    runoff.uniforms.uTime.value = time;
     splashes.uniforms.uTime.value = time;
     stage.renderer.render(stage.scene, stage.camera);
     if (!ready) { ready = true; overlays.onReady?.(); }

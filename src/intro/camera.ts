@@ -12,11 +12,11 @@ export function makeBeats(h: HouseParts, portrait: boolean): Paths {
   const ch = h.gutterChannel;
   const land = h.downspoutCurve.getPointAt(1);
   const pos = portrait
-    ? [new THREE.Vector3(-6, 4.6, 24), new THREE.Vector3(-3, 4.8, 13), new THREE.Vector3(o.x - 1.7, ch.y + 2.5, ch.z + 3.0), new THREE.Vector3(o.x - 0.3, o.y + 0.36, o.z + 0.42)]
-    : [new THREE.Vector3(-15.5, 4.4, 16), new THREE.Vector3(-5, 4.8, 11), new THREE.Vector3(o.x - 2.7, ch.y + 2.4, ch.z + 2.9), new THREE.Vector3(o.x - 0.32, o.y + 0.34, o.z + 0.42)];
+    ? [new THREE.Vector3(-6, 4.6, 24), new THREE.Vector3(-3, 4.8, 13), new THREE.Vector3(o.x - 2.2, ch.y + 1.9, ch.z + 2.6), new THREE.Vector3(o.x - 0.3, o.y + 0.36, o.z + 0.42)]
+    : [new THREE.Vector3(-15.5, 4.4, 16), new THREE.Vector3(-5, 4.8, 11), new THREE.Vector3(o.x - 3.6, ch.y + 1.7, ch.z + 2.5), new THREE.Vector3(o.x - 0.32, o.y + 0.34, o.z + 0.42)];
   const look = portrait
-    ? [new THREE.Vector3(0.3, 2.4, 0), new THREE.Vector3(1.5, 3.0, 2), new THREE.Vector3(o.x - 0.2, ch.y - 1.05, land.z * 0.55 + ch.z * 0.45), new THREE.Vector3(o.x, o.y - 0.08, o.z)]
-    : [new THREE.Vector3(1.2, 2.5, 0), new THREE.Vector3(1.5, 3.0, 2.5), new THREE.Vector3(o.x - 0.2, ch.y - 1.0, land.z * 0.55 + ch.z * 0.45), new THREE.Vector3(o.x, o.y - 0.08, o.z)];
+    ? [new THREE.Vector3(0.3, 2.4, 0), new THREE.Vector3(1.5, 3.0, 2), new THREE.Vector3(o.x - 0.6, ch.y - 0.9, ch.z + 0.4), new THREE.Vector3(o.x, o.y - 0.08, o.z)]
+    : [new THREE.Vector3(1.2, 2.5, 0), new THREE.Vector3(1.5, 3.0, 2.5), new THREE.Vector3(o.x - 0.8, ch.y - 0.75, ch.z + 0.3), new THREE.Vector3(o.x, o.y - 0.08, o.z)];
   const a = new THREE.CatmullRomCurve3([pos[0], pos[1], pos[2]], false, 'centripetal');
   const la = new THREE.CatmullRomCurve3([look[0], look[1], look[2]], false, 'centripetal');
   const b = new THREE.CatmullRomCurve3([pos[2], new THREE.Vector3(o.x - 1.2, o.y + 0.9, o.z + 1.4), pos[3]], false, 'centripetal');

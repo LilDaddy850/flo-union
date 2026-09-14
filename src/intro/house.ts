@@ -175,6 +175,7 @@ export function buildHouse(): HouseParts {
   const downspout = new THREE.Mesh(new THREE.TubeGeometry(downspoutCurve, 200, 0.056, 16, false), mGutterInside);
   downspout.castShadow = true;
   g.add(downspout);
+  gutter.attach(downspout); // one assembly: gutter + outlet + downspout slide in together
 
   // windows and door
   const glass = new THREE.MeshBasicMaterial({ color: 0xffc27a });
