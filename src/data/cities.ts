@@ -4,7 +4,7 @@ export type City = { slug: string; name: string; county: string; lines: L[]; pho
 
 export const cities: City[] = [
   { slug: 'orlando', name: 'Orlando', county: 'Orange', lines: [
-    { en: 'Orlando has every kind of roof: tile, shingle, metal, flat commercial. We have done all of them.', es: 'Orlando tiene todo tipo de techos: teja, tejamanil, metal, comercial plano. Los hemos hecho todos.' },
+    { en: 'Orlando has every kind of roof: tile, shingle, metal, flat commercial. We have done all of them.', es: 'Orlando tiene todo tipo de techos: teja, shingle, metal, comercial plano. Los hemos hecho todos.' },
     { en: 'Afternoon storms all summer. Gutters that move water fast matter here.', es: 'Tormentas por la tarde todo el verano. Aquí importan las canaletas que mueven el agua rápido.' },
   ], photos: ['newbuild-04', 'tile-02', 'hoa-02', 'bronze-03', 'condo-01', 'detail-miter'] },
   { slug: 'winter-park', name: 'Winter Park', county: 'Orange', lines: [
@@ -17,10 +17,10 @@ export const cities: City[] = [
   ], photos: ['newbuild-03', 'tile-03', 'siding-01', 'hoa-10', 'detail-downspout', 'brick-02'] },
   { slug: 'sanford', name: 'Sanford', county: 'Seminole', lines: [
     { en: 'Sanford mixes historic downtown homes with newer neighborhoods. Seamless gutters fit either one.', es: 'Sanford mezcla casas históricas del centro con vecindarios nuevos. Las canaletas sin costura van con cualquiera.' },
-    { en: 'We match the color to the trim so they disappear into the house.', es: 'Igualamos el color al borde para que se pierdan en la casa.' },
+    { en: 'We match the color to the trim so they disappear into the house.', es: 'Igualamos el color a las molduras para que se pierdan en la casa.' },
   ], photos: ['colonial-03', 'farmhouse-02', 'newbuild-05', 'bronze-05', 'detail-corner', 'siding-01'] },
   { slug: 'apopka', name: 'Apopka', county: 'Orange', lines: [
-    { en: 'Apopka homes sit under a lot of trees. Guards keep the gutters moving between cleanings.', es: 'Las casas de Apopka están bajo muchos árboles. Los protectores mantienen las canaletas corriendo entre limpiezas.' },
+    { en: 'Apopka homes sit under a lot of trees. Guards keep the gutters moving between cleanings.', es: 'Las casas de Apopka están bajo muchos árboles. Los protectores mantienen el agua corriendo entre limpiezas.' },
     { en: 'Same-day estimates, most homes done in a day.', es: 'Estimados el mismo día, la mayoría de las casas en un día.' },
   ], photos: ['detail-guard', 'ranch-pink', 'brick-01', 'newbuild-07', 'detail-drip', 'hoa-05'] },
   { slug: 'oviedo', name: 'Oviedo', county: 'Seminole', lines: [
@@ -49,7 +49,7 @@ export const cities: City[] = [
   ], photos: ['ranch-palm', 'siding-01', 'newbuild-04', 'brick-02', 'detail-elbow', 'colonial-03'] },
   { slug: 'lake-nona', name: 'Lake Nona', county: 'Orange', lines: [
     { en: 'Lake Nona is almost all new construction, a lot of it with tile roofs.', es: 'Lake Nona es casi toda construcción nueva, mucha con techos de teja.' },
-    { en: 'We install gutters on tile the right way, and we match the color to the house.', es: 'Instalamos canaletas en teja de la forma correcta, y igualamos el color a la casa.' },
+    { en: 'We install gutters on tile the right way, and we match the color to the house.', es: 'Instalamos canaletas en teja de la forma correcta, e igualamos el color a la casa.' },
   ], photos: ['tile-02', 'tile-01', 'newbuild-06', 'hoa-09', 'modern-02', 'detail-tile-eave'] },
   { slug: 'daytona-beach', name: 'Daytona Beach', county: 'Volusia', lines: [
     { en: 'Salt air near the coast is hard on cheap metal. Aluminum holds up.', es: 'El aire salado de la costa castiga el metal barato. El aluminio aguanta.' },
@@ -60,7 +60,7 @@ export const cities: City[] = [
     { en: 'Same-day estimates, real prices, and old gutters hauled away.', es: 'Estimados el mismo día, precios reales, y las canaletas viejas nos las llevamos.' },
   ], photos: ['siding-01', 'brick-03', 'ranch-palm', 'newbuild-08', 'detail-corner', 'colonial-02'] },
   { slug: 'lakeland', name: 'Lakeland', county: 'Polk', lines: [
-    { en: 'Lakeland gets the full summer storm season. Gutters that do not overflow are the whole point.', es: 'Lakeland recibe toda la temporada de tormentas de verano. Canaletas que no se desbordan son todo el punto.' },
+    { en: 'Lakeland gets the full summer storm season. Gutters that do not overflow are the whole point.', es: 'Lakeland recibe toda la temporada de tormentas de verano. Aquí lo que importa es que las canaletas no se desborden.' },
     { en: 'Six-inch seamless moves more water than the five-inch most houses came with.', es: 'Las de 6 pulgadas sin costura mueven más agua que las de 5 con las que vienen la mayoría de las casas.' },
   ], photos: ['newbuild-04', 'brick-04', 'siding-02', 'hoa-04', 'detail-downspout', 'tile-03'] },
   { slug: 'the-villages', name: 'The Villages', county: 'Sumter', lines: [
@@ -72,7 +72,7 @@ export const cities: City[] = [
     { en: 'Salt air is hard on cheap gutters. Ours hold up.', es: 'El aire salado castiga las canaletas baratas. Las nuestras aguantan.' },
   ], photos: ['bronze-03', 'condo-01', 'siding-02', 'brick-01', 'detail-roof-edge', 'newbuild-03'] },
   { slug: 'tampa', name: 'Tampa', county: 'Hillsborough', lines: [
-    { en: 'Tampa gets more rain than almost anywhere in the state.', es: 'Tampa recibe más lluvia que casi cualquier lugar del estado.' },
+    { en: 'Tampa summers mean a storm almost every afternoon and a lot of water coming off the roof at once.', es: 'Los veranos en Tampa traen tormentas casi todas las tardes y mucha agua bajando del techo de golpe.' },
     { en: 'We come out to Tampa for homes and for HOA and commercial work.', es: 'Vamos a Tampa para casas y para trabajo de HOA y comercial.' },
   ], photos: ['hoa-02', 'condo-02', 'newbuild-04', 'bronze-01', 'tile-02', 'commercial-01'] },
 ];

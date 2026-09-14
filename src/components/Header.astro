@@ -27,7 +27,7 @@ const nav = [
       <img src={wordImg.src} width={wordImg.attributes.width} height={wordImg.attributes.height} alt={site.name} class="logo-word" />
     </a>
 
-    <nav class="head-nav" aria-label="Main">
+    <nav class="head-nav" aria-label={t(lang, 'nav.main')}>
       {nav.map((n) => <a href={href(pageUrl(n.key, lang))}>{n.label}</a>)}
     </nav>
 
@@ -44,7 +44,7 @@ const nav = [
   <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label={t(lang, 'nav.menu')} />
   <div class="menu-panel">
     <div class="wrap">
-      <nav aria-label="Mobile">
+      <nav aria-label={t(lang, 'nav.mobile')}>
         {nav.map((n) => <a href={href(pageUrl(n.key, lang))}>{n.label}</a>)}
       </nav>
       <div class="menu-ctas">
@@ -65,7 +65,7 @@ const nav = [
     border-bottom: 1px solid rgba(244, 241, 236, 0.08);
     color: var(--text-light);
   }
-  .head-row { display: flex; align-items: center; gap: 28px; min-height: 76px; }
+  .head-row { display: flex; align-items: center; gap: 16px; min-height: 76px; }
   .logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
   .logo-mark { height: 40px; width: auto; }
   .logo-word { height: 13px; width: auto; opacity: 0.95; }
@@ -73,28 +73,28 @@ const nav = [
   .head-nav a, .lang {
     font-family: var(--f-label);
     font-size: 0.6875rem;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--dim-on-dark);
-    padding: 10px 12px;
+    padding: 10px 9px;
     position: relative;
     transition: color 0.25s var(--ease);
   }
   .head-nav a::after {
-    content: ''; position: absolute; left: 12px; right: 12px; bottom: 5px; height: 1px;
+    content: ''; position: absolute; left: 9px; right: 9px; bottom: 5px; height: 1px;
     background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
   }
   .head-nav a:hover { color: var(--text-light); }
   .head-nav a:hover::after { transform: scaleX(1); }
   .head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .lang { border: 1px solid rgba(244, 241, 236, 0.18); border-radius: var(--radius); padding: 9px 10px; }
+  .lang { border: 1px solid rgba(244, 241, 236, 0.18); border-radius: var(--radius); padding: 0 10px; min-height: 44px; display: inline-flex; align-items: center; }
   .lang:hover { color: var(--text-light); border-color: rgba(244, 241, 236, 0.4); }
   .phone { font-family: var(--f-head); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.02em; padding: 0 8px; color: var(--text-light); }
   .call { min-height: 44px; padding: 0 22px; }
   .burger { display: none; width: 44px; height: 44px; flex-direction: column; justify-content: center; gap: 5px; align-items: center; cursor: pointer; border-radius: var(--radius); }
   .burger span { display: block; width: 22px; height: 2px; background: var(--text-light); transition: transform 0.3s var(--ease), opacity 0.3s; }
   .menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
-  .menu-panel { display: none; background: var(--charcoal); border-top: 1px solid rgba(244, 241, 236, 0.08); }
+  .menu-panel { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: calc(100dvh - 66px - 60px); overflow: auto; background: var(--charcoal); border-top: 1px solid rgba(244, 241, 236, 0.08); box-shadow: 0 24px 40px rgba(0, 0, 0, 0.35); }
   .menu-panel nav { display: flex; flex-direction: column; padding: 12px 0; }
   .menu-panel nav a {
     font-family: var(--f-head); font-weight: 700; font-size: 1.75rem; padding: 12px 0;
@@ -104,11 +104,14 @@ const nav = [
   .menu-lang { font-family: var(--f-label); font-size: 0.6875rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim-on-dark); padding: 10px 4px; }
   .menu-toggle:checked ~ .menu-panel { display: block; }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 900px) {
     .site-header { position: sticky; top: 0; }
+  }
+  @media (min-width: 1280px) {
     .menu-toggle, .menu-toggle:checked ~ .menu-panel { display: none; }
   }
-  @media (max-width: 1099px) {
+  @media (max-width: 1279px) {
+    .head-actions { margin-left: auto; }
     .head-nav { display: none; }
     .phone { display: none; }
     .burger { display: flex; }

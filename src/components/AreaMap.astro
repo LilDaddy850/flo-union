@@ -1,5 +1,6 @@
 ---
 import { cities } from '../data/cities';
+import { areaMap } from '../data/areaMap';
 import { href, pageUrl, type Lang } from '../i18n/routes';
 import { t, countyLabel } from '../i18n/ui';
 interface Props { lang: Lang; heading?: boolean; }
@@ -10,8 +11,10 @@ for (const c of cities) {
   if (!groups.has(c.county)) groups.set(c.county, []);
   groups.get(c.county)!.push(c);
 }
+// dots that get a printed name on the map, and which side the name sits on
+const labelSide: Record<string, 'l' | 'r'> = { Tampa: 'r', Orlando: 'r', 'Daytona Beach': 'r', Melbourne: 'l', Lakeland: 'r', 'The Villages': 'r' };
 ---
-<section class="section theme-light" id="area">
+<section class:list={['section theme-light', !heading && 'no-head']} id="area">
   <div class="wrap">
     {heading && (
       <div class="section-head reveal">
@@ -20,24 +23,66 @@ for (const c of cities) {
         <p class="lead">{t(lang, 'area.sub')}</p>
       </div>
     )}
-    <div class="counties">
-      {[...groups.entries()].map(([county, list], i) => (
-        <div class:list={['county reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
-          <p class="eyebrow county-name">{countyLabel(lang, county)}</p>
-          <ul>
-            {list.map((c) => <li><a href={href(pageUrl('area', lang, c.slug))}>{c.name}</a></li>)}
-          </ul>
-        </div>
-      ))}
+    <div class="area-grid">
+      <figure class="map reveal">
+        <svg viewBox={areaMap.viewBox} aria-hidden="true" focusable="false">
+          <path class="inner" d={areaMap.inner} />
+          <path class="outer" d={areaMap.outer} />
+          {cities.map((c) => {
+            const p = areaMap.points[c.name];
+            if (!p) return null;
+            const side = labelSide[c.name];
+            return (
+              <a href={href(pageUrl('area', lang, c.slug))} class="dot" tabindex="-1">
+                <circle cx={p[0]} cy={p[1]} r="16" class="halo" />
+                <circle cx={p[0]} cy={p[1]} r="5.5" class="pin" />
+                {side && <text x={side === 'l' ? p[0] - 11 : p[0] + 11} y={p[1] + 4} text-anchor={side === 'l' ? 'end' : 'start'} class="label">{c.name}</text>}
+                <title>{c.name}</title>
+              </a>
+            );
+          })}
+        </svg>
+        <figcaption class="small dim">{t(lang, 'area.mapCaption')}</figcaption>
+      </figure>
+      <div class="counties">
+        {[...groups.entries()].map(([county, list], i) => (
+          <div class:list={['county reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+            <p class="eyebrow county-name">{countyLabel(lang, county)}</p>
+            <ul>
+              {list.map((c) => <li><a href={href(pageUrl('area', lang, c.slug))}>{c.name}</a></li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .counties { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .area-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: var(--s5); align-items: start; border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .map { margin: 0; }
+  .map svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .map figcaption { margin-top: var(--s2); }
+  .inner { fill: none; stroke: var(--charcoal); stroke-opacity: 0.2; stroke-width: 1; stroke-linejoin: round; }
+  .outer { fill: none; stroke: var(--charcoal); stroke-opacity: 0.75; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+  .dot { cursor: pointer; }
+  .dot .halo { fill: var(--orange); fill-opacity: 0; transition: fill-opacity 0.25s var(--ease); }
+  .dot .pin { fill: var(--orange); stroke: var(--offwhite); stroke-width: 2; }
+  .dot:hover .halo { fill-opacity: 0.18; }
+  .label { font-family: var(--f-label); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; fill: var(--dim); pointer-events: none; }
+  .counties { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4) var(--s3); }
   .county-name { color: var(--dim); margin-bottom: var(--s2); }
-  .county li a { display: block; font-family: var(--f-head); font-weight: 700; font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.25; padding: 4px 0; transition: color 0.2s var(--ease), transform 0.3s var(--ease); }
+  .county li a { display: block; font-family: var(--f-head); font-weight: 700; font-size: clamp(1.25rem, 1.6vw, 1.6rem); line-height: 1.25; padding: 4px 0; transition: color 0.2s var(--ease), transform 0.3s var(--ease); }
   .county li a:hover { color: var(--copper); transform: translateX(4px); }
-  @media (max-width: 899px) { .counties { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 480px) { .counties { grid-template-columns: 1fr; } }
+  @media (max-width: 899px) {
+    .area-grid { grid-template-columns: 1fr; gap: var(--s4); }
+    .map { max-width: 560px; }
+    .dot .pin { r: 8; stroke-width: 2.5; }
+    .label { font-size: 15px; }
+  }
+  @media (max-width: 480px) {
+    .counties { grid-template-columns: 1fr 1fr; gap: var(--s3) var(--s2); }
+    .county li a { font-size: 1.2rem; }
+    .label { display: none; }
+  }
 </style>

@@ -10,11 +10,12 @@ interface Props {
   widths?: number[];
   sizes?: string;
   loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
   class?: string;
 }
-const { stem, lang, widths = [480, 800, 1200, 1600], sizes = '(max-width: 899px) 100vw, 50vw', loading = 'lazy', class: cls } = Astro.props;
+const { stem, lang, widths = [480, 800, 1200, 1600], sizes = '(max-width: 899px) 100vw, 50vw', loading = 'lazy', fetchpriority, class: cls } = Astro.props;
 const src = photo(stem);
 const altText = alts[stem]?.[lang];
 if (!altText) throw new Error(`Missing ${lang} alt text for photo "${stem}"`);
 ---
-<Image src={src} alt={altText} widths={widths} sizes={sizes} loading={loading} decoding="async" class={cls} format="webp" quality={76} />
+<Image src={src} alt={altText} width={Math.max(...widths)} widths={widths} sizes={sizes} loading={loading} fetchpriority={fetchpriority} decoding="async" class={cls} format="webp" quality={76} />

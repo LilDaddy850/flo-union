@@ -3,7 +3,7 @@
 <div class="flow" aria-hidden="true"><span class="flow-fill"></span><span class="flow-drop"></span></div>
 
 <style>
-  .flow { position: fixed; left: 22px; top: 0; bottom: 0; width: 2px; z-index: 150; pointer-events: none; display: none; }
+  .flow { position: fixed; left: 22px; top: 76px; bottom: 0; width: 2px; z-index: 90; pointer-events: none; display: none; }
   .flow::before { content: ''; position: absolute; inset: 0; background: rgba(140, 140, 140, 0.18); }
   .flow-fill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: linear-gradient(180deg, var(--orange), var(--copper)); transform: scaleY(var(--p, 0)); transform-origin: top; will-change: transform; }
   .flow-drop { position: absolute; left: -3px; top: calc(var(--p, 0) * 100%); width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 12px rgba(232, 134, 42, 0.7); transform: translateY(-4px); }

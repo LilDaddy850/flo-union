@@ -16,8 +16,8 @@ const path = pageUrl('area', lang, city.slug);
 const altPath = pageUrl('area', other(lang), city.slug);
 const h1 = t(lang, 'city.h1', { city: city.name });
 const meta = {
-  en: { title: `Seamless Gutters in ${city.name}, FL | Flo Union LLC`, description: `Seamless gutter installation and replacement in ${city.name}, FL (${city.county} County). Free same-day estimates, licensed and insured, most homes done in one day. Call or text 689-267-7320.` },
-  es: { title: `Canaletas sin costura en ${city.name}, FL | Flo Union LLC`, description: `Instalación y reemplazo de canaletas sin costura en ${city.name}, FL (Condado de ${city.county}). Estimados gratis el mismo día, licencia y seguro, la mayoría de las casas en un día. Llame o mande un texto al 689-267-7320.` },
+  en: { title: `Seamless Gutters in ${city.name}, FL | Flo Union LLC`, description: `Seamless gutter installation and replacement in ${city.name}, FL. Free same-day estimates, licensed and insured, most homes done in one day. 689-267-7320.` },
+  es: { title: `Canaletas sin costura en ${city.name}, FL | Flo Union LLC`, description: `Instalación y reemplazo de canaletas sin costura en ${city.name}, FL. Estimados gratis el mismo día, con licencia y seguro. Llame al 689-267-7320.` },
 }[lang];
 const jsonLd = [{
   '@context': 'https://schema.org',
@@ -95,7 +95,7 @@ const jsonLd = [{
   .svc-list { border-top: 1px solid var(--line); }
   .svc-list a { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); font-family: var(--f-head); font-weight: 700; font-size: clamp(1.3rem, 2vw, 1.8rem); transition: color 0.2s; }
   .svc-list a:hover { color: var(--copper); }
-  .svc-list span { color: var(--orange); }
+  .svc-list span { color: var(--accent-text); }
   .process { padding-top: 0; }
   .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s3); border-top: 1px solid var(--line); padding-top: var(--s4); }
   .step .n { display: block; margin-bottom: 12px; }

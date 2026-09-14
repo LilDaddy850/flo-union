@@ -51,13 +51,14 @@ const markImg = await getImage({ src: mark, width: 320, format: 'webp' });
   }
   .hero-copy { position: relative; z-index: 2; }
   .hero-mark {
-    height: 92px; width: auto; align-self: flex-start; margin-bottom: var(--s4);
+    height: 56px; width: auto; align-self: flex-start; margin-bottom: var(--s3);
     clip-path: inset(0 0 100% 0);
     animation: wipe 0.6s var(--ease) 0.15s forwards;
   }
   @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
-  .hero-eyebrow { margin-bottom: var(--s3); }
+  .hero-eyebrow { margin-bottom: var(--s2); }
   .h-hero { max-width: 12ch; }
+  :global(html[lang="es"]) .h-hero { max-width: 14ch; font-size: clamp(2.5rem, 6vw, 5rem); }
   .hero-sub { margin-top: var(--s3); }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
   .hero-media {
@@ -83,7 +84,7 @@ const markImg = await getImage({ src: mark, width: 320, format: 'webp' });
     }
     .hero-shade { background: linear-gradient(180deg, rgba(28,28,30,0.55), rgba(28,28,30,0.82)); }
     .hero-copy { padding: var(--s6) 0 var(--s5); min-height: 86svh; display: flex; flex-direction: column; justify-content: flex-end; }
-    .hero-mark { height: 72px; }
+    .hero-mark { height: 56px; }
     .hero-ctas .btn { flex: 1 1 100%; }
   }
 </style>
@@ -91,6 +92,7 @@ const markImg = await getImage({ src: mark, width: 320, format: 'webp' });
 <script>
   const c = document.querySelector<HTMLCanvasElement>('canvas.rain');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { const v = document.querySelector('.hero video') as HTMLVideoElement | null; if (v) { v.removeAttribute('autoplay'); v.pause(); } }
   if (c && !reduced) {
     const ctx = c.getContext('2d')!;
     type Drop = { x: number; y: number; l: number; v: number; a: number };

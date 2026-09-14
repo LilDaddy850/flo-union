@@ -2,6 +2,8 @@
 import { site } from '../data/site';
 import { cities } from '../data/cities';
 import { absUrl, href, other, type Lang } from '../i18n/routes';
+import { getImage } from 'astro:assets';
+import lockup from '../assets/brand/lockup.png';
 
 interface Props {
   lang: Lang;
@@ -10,8 +12,11 @@ interface Props {
   path: string;
   altPath: string;
   jsonLd?: object[];
+  noindex?: boolean;
 }
-const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
+const { lang, title, description, path, altPath, jsonLd = [], noindex = false } = Astro.props;
+const logoImg = await getImage({ src: lockup, width: 600, format: 'png' });
+const logoUrl = new URL(logoImg.src, Astro.site).href;
 
 const canonical = absUrl(site.url, path);
 const alternate = absUrl(site.url, altPath);
@@ -28,11 +33,12 @@ const business: Record<string, unknown> = {
   telephone: site.phoneE164,
   email: site.email,
   image: ogImage,
-  logo: ogImage,
-  address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.region, addressCountry: 'US' },
+  logo: logoUrl,
+  address: { '@type': 'PostalAddress', addressRegion: site.region, addressCountry: 'US' },
   areaServed: cities.map((c) => ({ '@type': 'City', name: `${c.name}, FL` })),
   knowsLanguage: ['en', 'es'],
-  paymentAccepted: 'Cash, Credit Card, Check, Zelle',
+  openingHours: 'Mo-Su',
+  paymentAccepted: 'Cash, Card, Check, Zelle',
 };
 if (site.founded) business.foundingDate = site.founded;
 if (site.sameAs.length) business.sameAs = site.sameAs;
@@ -41,10 +47,14 @@ const graph = [business, ...jsonLd];
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-<link rel="alternate" hreflang="en" href={enUrl} />
-<link rel="alternate" hreflang="es" href={esUrl} />
-<link rel="alternate" hreflang="x-default" href={enUrl} />
+{noindex ? <meta name="robots" content="noindex" /> : (
+  <>
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+  </>
+)}
 <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
 <link rel="sitemap" href={href('/sitemap-index.xml')} />
 <meta name="theme-color" content="#1C1C1E" />

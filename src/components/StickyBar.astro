@@ -32,7 +32,8 @@ const { lang } = Astro.props;
     color: #FFF7F0;
   }
   .sticky-bar .sb svg { width: 18px; height: 18px; fill: currentColor; }
-  .sticky-bar .call { background: var(--grad-orange); }
+  .sticky-bar .call { background: var(--grad-orange); color: var(--charcoal); }
+  body:has(.menu-toggle:checked) .sticky-bar { display: none; }
   .sticky-bar .text { background: var(--graphite); }
   @media (max-width: 899px) {
     .sticky-bar { display: grid; }

@@ -11,7 +11,7 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const meta = {
   en: { title: 'Our Work: Seamless Gutter Projects | Flo Union LLC', description: 'Real seamless gutter jobs across Central Florida: HOA communities, condo buildings, new construction, tile roofs, bronze and white gutters. No stock photos.' },
-  es: { title: 'Nuestro trabajo: proyectos de canaletas | Flo Union LLC', description: 'Trabajos reales de canaletas sin costura en Florida Central: comunidades HOA, condominios, construcción nueva, techos de teja, canaletas bronce y blancas. Sin fotos de archivo.' },
+  es: { title: 'Nuestro trabajo: proyectos de canaletas | Flo Union LLC', description: 'Trabajos reales de canaletas sin costura en Florida Central: comunidades HOA, condominios, construcción nueva, techos de teja. Sin fotos de archivo.' },
 }[lang];
 ---
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('projects', lang)} altPath={pageUrl('projects', other(lang))}>

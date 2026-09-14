@@ -23,11 +23,11 @@ export const site = {
   } as L,
   sameAs: [] as string[], // TODO_JAY: Google Business Profile, Facebook page, etc.
   colors: [
-    { id: 'white', name: { en: 'White', es: 'Blanco' } as L, hex: '#F2F0EB', photo: 'newbuild-04' },
+    { id: 'white', name: { en: 'White', es: 'Blanco' } as L, hex: '#F2F0EB', photo: 'newbuild-06' },
     { id: 'eggshell', name: { en: 'Eggshell', es: 'Cáscara de huevo' } as L, hex: '#EDE6D6', photo: '' },
     { id: 'linen', name: { en: 'Linen', es: 'Lino' } as L, hex: '#E3DAC4', photo: '' },
-    { id: 'black', name: { en: 'Black', es: 'Negro' } as L, hex: '#1A1A1A', photo: 'modern-01' },
-    { id: 'bronze', name: { en: 'Bronze', es: 'Bronce' } as L, hex: '#3B2A1E', photo: 'bronze-03' },
+    { id: 'black', name: { en: 'Black', es: 'Negro' } as L, hex: '#1A1A1A', photo: 'modern-02' },
+    { id: 'bronze', name: { en: 'Bronze', es: 'Bronce' } as L, hex: '#3B2A1E', photo: 'bronze-01' },
   ],
 };
 
@@ -41,7 +41,7 @@ export const why = [
     } as L,
   },
   {
-    label: { en: 'Personal', es: 'Personales' } as L,
+    label: { en: 'Personal', es: 'Trato personal' } as L,
     title: { en: 'You deal with the people doing the work.', es: 'Usted trata con la gente que hace el trabajo.' } as L,
     body: {
       en: 'No call center, no salesman, no crew you have never met. We measure, we quote, we install.',

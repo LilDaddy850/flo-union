@@ -5,8 +5,9 @@ import { href, pageUrl, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
 interface Props { lang: Lang; heading?: boolean; }
 const { lang, heading = true } = Astro.props;
+const RowTag = heading ? 'h3' : 'h2';
 ---
-<section class="section theme-light" id="services">
+<section class:list={['section theme-light', !heading && 'no-head']} id="services">
   <div class="wrap">
     {heading && (
       <div class="section-head reveal">
@@ -17,10 +18,10 @@ const { lang, heading = true } = Astro.props;
     <div class="rows">
       {services.map((s, i) => (
         <a class:list={['row reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]} href={href(pageUrl('services', lang, s.slug[lang]))}>
-          <div class="thumb"><Photo stem={s.hero} lang={lang} widths={[240, 480]} sizes="140px" /></div>
+          <div class="thumb"><Photo stem={s.thumb ?? s.hero} lang={lang} widths={[240, 480]} sizes="140px" /></div>
           <div class="body">
             <p class="eyebrow idx">0{i + 1}</p>
-            <h3 class="h-2">{s.name[lang]}</h3>
+            <RowTag class="h-2">{s.name[lang]}</RowTag>
           </div>
           <p class="short">{s.short[lang]}</p>
           <span class="more">{t(lang, 'services.more')} →</span>
@@ -43,7 +44,7 @@ const { lang, heading = true } = Astro.props;
   .row:hover .thumb :global(img) { transform: scale(1.05); }
   .idx { margin-bottom: 8px; color: var(--dim); }
   .short { color: var(--dim); max-width: 42ch; }
-  .more { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+  .more { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-text); white-space: nowrap; }
   @media (max-width: 899px) {
     .row { grid-template-columns: 96px 1fr; gap: var(--s3); }
     .thumb { width: 96px; }

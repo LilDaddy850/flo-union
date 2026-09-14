@@ -25,18 +25,20 @@ interface Props {
   path: string;
   altPath: string;
   jsonLd?: object[];
+  noindex?: boolean;
 }
-const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
+const { lang, title, description, path, altPath, jsonLd = [], noindex = false } = Astro.props;
 ---
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preload" href={fontHead} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontLabel} as="font" type="font/woff2" crossorigin />
-    <Seo {lang} {title} {description} {path} {altPath} {jsonLd} />
+    <Seo {lang} {title} {description} {path} {altPath} {jsonLd} {noindex} />
   </head>
   <body>
     <a class="skip-link" href="#main">{t(lang, 'skip')}</a>
@@ -88,7 +90,7 @@ const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
         },
         { threshold: 0.6 }
       );
-      document.querySelectorAll('[data-count]').forEach((el) => counted.observe(el));
+      document.querySelectorAll('[data-count]').forEach((el) => { if (!reduced) el.textContent = '0' + ((el as HTMLElement).dataset.suffix || ''); counted.observe(el); });
     </script>
   </body>
 </html>

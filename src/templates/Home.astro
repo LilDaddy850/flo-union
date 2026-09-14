@@ -24,7 +24,7 @@ const meta = {
   },
   es: {
     title: 'Canaletas sin costura en Florida Central y Tampa | Flo Union LLC',
-    description: 'Canaletas sin costura de 6 pulgadas hechas en el sitio. Licencia y seguro, estimados gratis el mismo día, la mayoría de las casas en un día. Más de 500 casas. Llame o mande un texto al 689-267-7320.',
+    description: 'Canaletas sin costura de 6 pulgadas hechas en el sitio. Con licencia y seguro, estimados gratis el mismo día. Más de 500 casas. Llame al 689-267-7320.',
   },
 }[lang];
 
@@ -38,6 +38,6 @@ const items = featured.map((slug) => projects.find((p) => p.slug === slug)!);
   <WhyRows lang={lang} />
   <ColorSwatches lang={lang} />
   <AreaMap lang={lang} />
-  <Faq lang={lang} items={faq.slice(0, 6)} linkAll />
+  <Faq lang={lang} items={faq} linkAll />
   <CtaBand lang={lang} />
 </Base>

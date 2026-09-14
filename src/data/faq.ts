@@ -34,8 +34,8 @@ export const faq: Faq[] = [
   {
     q: { en: 'What is included?', es: '¿Qué incluye?' },
     a: {
-      en: 'Removal and haul-away of the old gutters, 6-inch seamless aluminum, hidden hangers, screws instead of spikes, 3x4 downspouts with extensions, and cleanup. Pay when it is finished: cash, card, check, or Zelle.',
-      es: 'Quitar y llevarnos las canaletas viejas, aluminio sin costura de 6 pulgadas, soportes ocultos, tornillos en vez de clavos, bajantes de 3x4 con extensiones, y la limpieza. Pague cuando esté terminado: efectivo, tarjeta, cheque o Zelle.',
+      en: 'Removal and haul-away of the old gutters, 6-inch seamless aluminum, hidden hangers, screws instead of spikes, 3x4 downspouts (extensions available), and cleanup. Pay when it is finished: cash, card, check, or Zelle.',
+      es: 'Quitar y llevarnos las canaletas viejas, aluminio sin costura de 6 pulgadas, soportes ocultos, tornillos en vez de clavos, bajantes de 3x4 (extensiones disponibles) y la limpieza. Pague cuando esté terminado: efectivo, tarjeta, cheque o Zelle.',
     },
   },
   {

@@ -6,6 +6,7 @@ export type Service = {
   name: L;
   short: L;
   hero: string;
+  thumb?: string;
   intro: L;
   included: L[];
   when: L[];
@@ -23,9 +24,10 @@ export const services: Service[] = [
       es: 'Aluminio sin costura de 6 pulgadas, hecho en el sitio en una sola pieza por tramo. La mayoría de las casas en un día.',
     },
     hero: 'newbuild-04',
+    thumb: 'newbuild-03',
     intro: {
       en: 'We run the gutter on your driveway with our own machine, so each side of the house gets one continuous piece. No seams, no joints, nothing to leak. Then we hang it with hidden hangers and screws, set the pitch so the water actually moves, and put the downspouts where the water needs to go.',
-      es: 'Hacemos la canaleta en su entrada con nuestra propia máquina, así que cada lado de la casa recibe una sola pieza continua. Sin costuras, sin juntas, nada que gotee. Luego la montamos con soportes ocultos y tornillos, le damos la inclinación correcta para que el agua corra, y colocamos los bajantes donde el agua debe ir.',
+      es: 'Hacemos la canaleta en la entrada de su casa con nuestra propia máquina, así que cada lado de la casa recibe una sola pieza continua. Sin costuras, sin juntas, nada que gotee. Luego la montamos con soportes ocultos y tornillos, le damos la inclinación correcta para que el agua corra, y colocamos los bajantes donde el agua debe ir.',
     },
     included: [
       { en: '6-inch seamless aluminum gutters', es: 'Canaletas de aluminio sin costura de 6 pulgadas' },
@@ -66,7 +68,7 @@ export const services: Service[] = [
     hero: 'brick-02',
     intro: {
       en: 'Sectional gutters leak at the joints. Old gutters sag, pull away from the fascia, and overflow in a normal rain. We take the old ones down, haul them off, and put up new seamless gutters the same day.',
-      es: 'Las canaletas por secciones gotean en las juntas. Las viejas se cuelgan, se separan de la fascia y se desbordan con una lluvia normal. Quitamos las viejas, nos las llevamos y ponemos canaletas nuevas sin costura el mismo día.',
+      es: 'Las canaletas por secciones gotean en las juntas. Las viejas se vencen, se separan de la fascia y se desbordan con una lluvia normal. Quitamos las viejas, nos las llevamos y ponemos canaletas nuevas sin costura el mismo día.',
     },
     included: [
       { en: 'Removal and haul-away of the old gutters, included', es: 'Quitar y llevarnos las canaletas viejas, incluido' },
@@ -77,7 +79,7 @@ export const services: Service[] = [
     ],
     when: [
       { en: 'Leaking at the seams', es: 'Goteo en las uniones' },
-      { en: 'Sagging or pulling away from the house', es: 'Colgadas o separadas de la casa' },
+      { en: 'Sagging or pulling away from the house', es: 'Vencidas o separadas de la casa' },
       { en: 'Rust, holes, or patched sections', es: 'Óxido, huecos o secciones parchadas' },
       { en: 'Overflowing in a normal rain', es: 'Desbordes con una lluvia normal' },
     ],
@@ -89,11 +91,11 @@ export const services: Service[] = [
       },
       {
         q: { en: 'Can you replace just one side?', es: '¿Pueden reemplazar solo un lado?' },
-        a: { en: 'Yes. We replace full runs so that side gets one seamless piece. We will tell you at the estimate if the rest is close behind.', es: 'Sí. Reemplazamos tramos completos para que ese lado quede en una sola pieza. En el estimado le decimos si el resto está por fallar también.' },
+        a: { en: 'Yes. We replace full runs so that side gets one seamless piece. We will tell you at the estimate if the other sides are about to go too.', es: 'Sí. Reemplazamos tramos completos para que ese lado quede en una sola pieza. En el estimado le decimos si el resto está por fallar también.' },
       },
       {
         q: { en: 'Do I need to be home?', es: '¿Tengo que estar en casa?' },
-        a: { en: 'For the estimate it helps. For the install, no, as long as we can get to the house.', es: 'Para el estimado ayuda. Para la instalación no, siempre que podamos llegar a la casa.' },
+        a: { en: 'For the estimate it helps. For the install, no, as long as we can get to the house.', es: 'Para el estimado ayuda. Para la instalación no, siempre que tengamos acceso alrededor de la casa.' },
       },
     ],
   },
@@ -107,11 +109,11 @@ export const services: Service[] = [
     },
     hero: 'detail-guard',
     intro: {
-      en: 'If you have trees over the roof, guards keep leaves, pine needles, and oak out of the gutters so the water keeps moving. We install two types, and we put them on any gutters, not just ours.',
+      en: 'If you have trees over the roof, guards keep leaves, pine needles, and oak debris out of the gutters so the water keeps moving. We install two types, and we put them on any gutters, not just ours.',
       es: 'Si tiene árboles sobre el techo, los protectores mantienen las hojas, agujas de pino y hojas de roble fuera de las canaletas para que el agua siga corriendo. Instalamos dos tipos, y los ponemos en cualquier canaleta, no solo las nuestras.',
     },
     included: [
-      { en: 'Two guard types to choose from', es: 'Dos tipos de protector para elegir' },
+      { en: 'Two guard types to choose from', es: 'Dos tipos de protectores para elegir' },
       { en: 'Fitted to your gutter size', es: 'Ajustados al tamaño de su canaleta' },
       { en: 'Installed on existing gutters or with new ones', es: 'Instalados en canaletas existentes o con canaletas nuevas' },
     ],
@@ -145,15 +147,16 @@ export const services: Service[] = [
       es: 'Condominios, comunidades, edificios de varias unidades. Un equipo, un solo contacto, a tiempo.',
     },
     hero: 'condo-01',
+    thumb: 'hoa-03',
     intro: {
       en: 'We have done whole communities and four-story buildings. Same seamless gutters, same crew, with the equipment and the scheduling to handle a property, not just a house.',
       es: 'Hemos hecho comunidades completas y edificios de cuatro pisos. Las mismas canaletas sin costura, el mismo equipo, con el equipamiento y la planificación para manejar una propiedad, no solo una casa.',
     },
     included: [
       { en: 'Multi-unit and multi-story buildings', es: 'Edificios de varias unidades y varios pisos' },
-      { en: 'Lifts and equipment for tall work', es: 'Elevadores y equipo para trabajo en altura' },
+      { en: 'Lifts and equipment for tall work', es: 'Plataformas elevadoras y equipo para trabajo en altura' },
       { en: 'One point of contact for the board or the manager', es: 'Un solo contacto para la junta o el administrador' },
-      { en: 'Scheduled around your residents', es: 'Programado alrededor de sus residentes' },
+      { en: 'Scheduled around your residents', es: 'Horario coordinado para no molestar a sus residentes' },
     ],
     when: [
       { en: 'HOA and condo boards', es: 'Juntas de HOA y condominios' },
@@ -171,8 +174,8 @@ export const services: Service[] = [
         a: { en: 'We set the schedule with the manager, keep driveways and walkways clear, and clean up every day.', es: 'Fijamos el cronograma con el administrador, mantenemos entradas y pasillos libres, y limpiamos todos los días.' },
       },
       {
-        q: { en: 'Are you insured for commercial work?', es: '¿Tienen seguro para trabajo comercial?' },
-        a: { en: 'Licensed and insured.', es: 'Con licencia y seguro.' },
+        q: { en: 'Are you licensed and insured?', es: '¿Tienen licencia y seguro?' },
+        a: { en: 'Yes. Licensed and insured.', es: 'Sí. Con licencia y seguro.' },
       },
     ],
   },

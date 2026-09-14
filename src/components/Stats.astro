@@ -9,11 +9,11 @@ const { lang } = Astro.props;
   <div class="wrap">
     <div class="stats-grid">
       <div class="stat reveal">
-        <span class="num" data-count={site.stats.homes} data-suffix="+">0+</span>
+        <span class="num" data-count={site.stats.homes} data-suffix="+">{site.stats.homes}+</span>
         <span class="cap">{t(lang, 'stats.homes')}</span>
       </div>
       <div class="stat reveal reveal-d1">
-        <span class="num" data-count={site.stats.years} data-suffix="+">0+</span>
+        <span class="num" data-count={site.stats.years} data-suffix="+">{site.stats.years}+</span>
         <span class="cap">{t(lang, 'stats.years')}</span>
       </div>
       <div class="stat reveal reveal-d2">
@@ -42,4 +42,5 @@ const { lang } = Astro.props;
   .cap { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
   @media (max-width: 899px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 480px) { .num { font-size: 4rem; } .num-text { font-size: 1.6rem; } }
+  @media (forced-colors: active) { .num { background: none; color: CanvasText; -webkit-text-fill-color: CanvasText; } }
 </style>

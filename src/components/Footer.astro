@@ -16,7 +16,7 @@ const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img src={lockupImg.src} width={lockupImg.attributes.width} height={lockupImg.attributes.height} alt={site.name} class="foot-logo" />
+        <img src={lockupImg.src} width={lockupImg.attributes.width} height={lockupImg.attributes.height} alt={site.name} class="foot-logo" loading="lazy" />
         <a class="foot-phone" href={`tel:${site.phoneE164}`}>{site.phone}</a>
         <a class="foot-email" href={`mailto:${site.email}`}>{site.email}</a>
         <p class="small dim">{t(lang, 'footer.hours')} · {t(lang, 'footer.spanish')}</p>
@@ -58,7 +58,7 @@ const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
 
 <style>
   .site-footer { padding: var(--s6) 0 calc(var(--s5) + 8px); }
-  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr 1fr; gap: var(--s5) var(--s4); margin-bottom: var(--s5); }
+  .foot-grid { display: grid; grid-template-columns: 1.3fr 1fr 1.4fr 0.8fr; gap: var(--s5) var(--s4); margin-bottom: var(--s5); }
   .foot-logo { width: 190px; height: auto; margin-bottom: var(--s3); opacity: 0.95; }
   .foot-phone { display: block; font-family: var(--f-head); font-weight: 700; font-size: 1.6rem; letter-spacing: 0.01em; }
   .foot-email { display: block; color: var(--dim); margin: 6px 0 var(--s3); }
@@ -67,6 +67,7 @@ const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
   ul a { color: var(--dim); transition: color 0.2s; }
   ul a:hover { color: var(--text-light); }
   .foot-cities { columns: 2; column-gap: var(--s3); }
+  .foot-cities li { break-inside: avoid; white-space: nowrap; }
   .foot-legal { margin-top: var(--s3); }
   @media (max-width: 899px) {
     .foot-grid { grid-template-columns: 1fr 1fr; }
@@ -76,4 +77,5 @@ const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
     .foot-grid { grid-template-columns: 1fr; }
     .foot-cities { columns: 2; }
   }
+  @media (max-width: 899px) { .site-footer li a { display: inline-block; padding: 5px 0; } }
 </style>

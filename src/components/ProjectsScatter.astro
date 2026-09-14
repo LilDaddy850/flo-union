@@ -29,7 +29,7 @@ const CapTag = as === 'h1' ? 'h2' : 'h3';
               <div class="pj-cap">
                 <span class="pj-n">{pad(p.n)}</span>
                 <CapTag class="h-3">{p.title[lang]}</CapTag>
-                <p class="small dim">{p.where[lang]} · {p.year}</p>
+                <p class="small dim">{p.where[lang]}</p>
               </div>
             </Tag>
           </article>
@@ -47,7 +47,7 @@ const CapTag = as === 'h1' ? 'h2' : 'h3';
 
 <style>
   .scatter { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s4) var(--s3); align-items: start; }
-  .pj { position: relative; }
+  .pj { position: relative; scroll-margin-top: 96px; }
   .pj-link { display: block; }
   .pj-media { border-radius: var(--radius-lg); overflow: hidden; background: var(--graphite); }
   .pj-media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }

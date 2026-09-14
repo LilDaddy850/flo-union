@@ -10,6 +10,9 @@ const en = {
   'nav.faq': 'FAQ',
   'nav.contact': 'Contact',
   'nav.menu': 'Menu',
+  'nav.main': 'Main',
+  'nav.mobile': 'Mobile menu',
+  'area.mapCaption': 'Pick a dot or a city name.',
   'nav.close': 'Close',
   'skip': 'Skip to content',
 
@@ -113,6 +116,9 @@ const es: Record<UiKey, string> = {
   'nav.faq': 'Preguntas',
   'nav.contact': 'Contacto',
   'nav.menu': 'Menú',
+  'nav.main': 'Principal',
+  'nav.mobile': 'Menú móvil',
+  'area.mapCaption': 'Elija un punto o el nombre de la ciudad.',
   'nav.close': 'Cerrar',
   'skip': 'Ir al contenido',
 
@@ -126,7 +132,7 @@ const es: Record<UiKey, string> = {
 
   'hero.eyebrow': 'Canaletas sin costura · Florida Central y Tampa',
   'hero.h1': 'Canaletas sin costura, hechas en el sitio, a la medida de su casa.',
-  'hero.sub': 'Licencia y seguro. Estimados gratis el mismo día. Más de 500 casas terminadas.',
+  'hero.sub': 'Con licencia y seguro. Estimados gratis el mismo día. Más de 500 casas terminadas.',
   'hero.videoLabel': 'Nuestro equipo instalando canaletas sin costura',
 
   'stats.homes': 'casas terminadas',
@@ -148,10 +154,10 @@ const es: Record<UiKey, string> = {
   'projects.detailsSub': 'Esquinas, bajantes, protectores. Lo que separa a un profesional de un improvisado.',
 
   'why.eyebrow': 'Por qué Flo Union',
-  'why.title': 'Locales. Personales. Rápidos. Nos importa de verdad.',
+  'why.title': 'Locales. Trato personal. Rápidos. Nos importa de verdad.',
 
   'colors.eyebrow': 'Colores',
-  'colors.title': 'Que combine con la casa, no solo con el borde.',
+  'colors.title': 'Que combine con la casa, no solo con las molduras.',
   'colors.more': 'y más',
   'colors.sub': 'Pregunte por otros colores en su estimado.',
 
