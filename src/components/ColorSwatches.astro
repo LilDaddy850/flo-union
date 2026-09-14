@@ -1,0 +1,44 @@
+---
+import Photo from './Photo.astro';
+import { site } from '../data/site';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section theme-dark" id="colors">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">{t(lang, 'colors.eyebrow')}</p>
+      <h2 class="h-1">{t(lang, 'colors.title')}</h2>
+      <p class="lead">{t(lang, 'colors.sub')}</p>
+    </div>
+    <ul class="swatches">
+      {site.colors.map((c, i) => (
+        <li class:list={['sw reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+          <div class="sw-media" style={`--chip:${c.hex}`}>
+            {c.photo ? <Photo stem={c.photo} lang={lang} widths={[400, 800]} sizes="(max-width: 899px) 50vw, 20vw" /> : <div class="flat" />}
+            <span class="chip" aria-hidden="true"></span>
+          </div>
+          <p class="sw-name">{c.name[lang]}</p>
+        </li>
+      ))}
+      <li class="sw more reveal reveal-d3">
+        <div class="sw-media"><div class="flat dots"></div></div>
+        <p class="sw-name dim">{t(lang, 'colors.more')}</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s3); }
+  .sw-media { position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-lg); overflow: hidden; background: var(--graphite); }
+  .sw-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .flat { width: 100%; height: 100%; background: var(--chip, var(--graphite)); }
+  .dots { background: repeating-linear-gradient(45deg, var(--graphite) 0 10px, #333337 10px 20px); }
+  .chip { position: absolute; left: 12px; bottom: 12px; width: 34px; height: 34px; border-radius: 50%; background: var(--chip); border: 2px solid rgba(244, 241, 236, 0.85); box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .sw-name { margin-top: 12px; font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.18em; text-transform: uppercase; }
+  @media (max-width: 899px) { .swatches { grid-template-columns: repeat(3, 1fr); gap: var(--s2); } }
+  @media (max-width: 480px) { .swatches { grid-template-columns: repeat(2, 1fr); } }
+</style>

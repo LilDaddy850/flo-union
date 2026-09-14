@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import AreaMap from '../components/AreaMap.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const meta = {
+  en: { title: 'Service Area: Central Florida & Tampa | Flo Union LLC', description: 'Seamless gutters across Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa and more. Free same-day estimates.' },
+  es: { title: 'Área de servicio: Florida Central y Tampa | Flo Union LLC', description: 'Canaletas sin costura en Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa y más. Estimados gratis el mismo día.' },
+}[lang];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('area', lang)} altPath={pageUrl('area', other(lang))}>
+  <section class="theme-dark page-head">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'area.eyebrow')}</p>
+      <h1 class="h-hero">{t(lang, 'area.title')}</h1>
+      <p class="lead">{t(lang, 'city.intro')}</p>
+    </div>
+  </section>
+  <AreaMap lang={lang} />
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .page-head { padding-block: var(--s6) var(--s5); }
+  .page-head .eyebrow { margin-bottom: var(--s3); }
+  .page-head .lead { margin-top: var(--s3); }
+</style>

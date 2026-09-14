@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { href, pageUrl } from '../i18n/routes';
+import { t } from '../i18n/ui';
+---
+<Base lang="en" title="Page not found | Flo Union LLC" description="That page is not here." path="/404/" altPath="/es/">
+  <section class="section theme-dark nf">
+    <div class="wrap">
+      <p class="eyebrow">404</p>
+      <h1 class="h-hero">{t('en', 'notfound.title')}</h1>
+      <p class="lead">{t('en', 'notfound.sub')}</p>
+      <div class="ctas">
+        <a class="btn" href={`tel:${site.phoneE164}`}>{t('en', 'cta.callNumber')}</a>
+        <a class="btn ghost" href={href(pageUrl('home', 'en'))}>{t('en', 'notfound.home')}</a>
+      </div>
+      <div class="es" lang="es">
+        <h2 class="h-2">{t('es', 'notfound.title')}</h2>
+        <p class="dim">{t('es', 'notfound.sub')}</p>
+        <a class="link" href={href(pageUrl('home', 'es'))}>{t('es', 'notfound.home')} →</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 70vh; display: flex; align-items: center; }
+  .nf .eyebrow { margin-bottom: var(--s3); }
+  .lead { margin-top: var(--s3); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
+  .es { margin-top: var(--s6); padding-top: var(--s4); border-top: 1px solid var(--line-on-dark); }
+  .link { display: inline-block; margin-top: var(--s2); font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); }
+</style>

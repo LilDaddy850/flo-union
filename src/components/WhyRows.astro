@@ -1,0 +1,35 @@
+---
+import { why } from '../data/site';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section theme-light" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">{t(lang, 'why.eyebrow')}</p>
+      <h2 class="h-1">{t(lang, 'why.title')}</h2>
+    </div>
+    <div class="rows">
+      {why.map((w, i) => (
+        <div class:list={['row reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+          <p class="eyebrow label">{w.label[lang]}</p>
+          <h3 class="h-2">{w.title[lang]}</h3>
+          <p class="body dim">{w.body[lang]}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .rows { border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 180px 1.1fr 1fr; gap: var(--s4); padding: var(--s4) 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .label { color: var(--dim); padding-top: 0.6em; }
+  .body { max-width: 46ch; }
+  @media (max-width: 899px) {
+    .row { grid-template-columns: 1fr; gap: var(--s2); }
+    .label { padding-top: 0; }
+  }
+</style>

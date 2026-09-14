@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section theme-light stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <span class="num" data-count={site.stats.homes} data-suffix="+">0+</span>
+        <span class="cap">{t(lang, 'stats.homes')}</span>
+      </div>
+      <div class="stat reveal reveal-d1">
+        <span class="num" data-count={site.stats.years} data-suffix="+">0+</span>
+        <span class="cap">{t(lang, 'stats.years')}</span>
+      </div>
+      <div class="stat reveal reveal-d2">
+        <span class="num num-text">{t(lang, 'stats.licensed')}</span>
+        <span class="cap">{t(lang, 'stats.licensedSub')}</span>
+      </div>
+      <div class="stat reveal reveal-d3">
+        <span class="num num-text">{t(lang, 'stats.free')}</span>
+        <span class="cap">{t(lang, 'stats.freeSub')}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats { padding-block: clamp(56px, 8vw, 110px); }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); }
+  .stat { display: flex; flex-direction: column; gap: 14px; padding-top: var(--s3); border-top: 1px solid var(--line); }
+  .num {
+    font-family: var(--f-head); font-weight: 800; line-height: 0.9; letter-spacing: -0.03em;
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    background: var(--grad-orange); -webkit-background-clip: text; background-clip: text; color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .num-text { font-size: clamp(1.9rem, 2.8vw, 2.6rem); line-height: 1; padding-top: 0.5em; padding-bottom: 0.25em; }
+  .cap { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
+  @media (max-width: 899px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .num { font-size: 4rem; } .num-text { font-size: 1.6rem; } }
+</style>

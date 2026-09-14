@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Privacy | Flo Union LLC',
+    description: 'This site uses no cookies, analytics, or tracking, and has no forms. Contact happens by phone, text, or email.',
+    h1: 'Privacy.',
+    p: [
+      'This website does not use cookies, analytics, or tracking of any kind. It has no forms.',
+      'The only way to reach us from this site is by phone, text, or email. We use what you send us only to respond to you and to do the work you ask for. We do not sell or share your information with anyone.',
+      'If we add analytics or a contact form later, this page will say exactly what changed.',
+    ],
+    q: 'Questions:',
+    updated: 'Last updated September 2026.',
+  },
+  es: {
+    title: 'Privacidad | Flo Union LLC',
+    description: 'Este sitio no usa cookies, análisis ni rastreo, y no tiene formularios. El contacto es por teléfono, texto o correo.',
+    h1: 'Privacidad.',
+    p: [
+      'Este sitio web no usa cookies, análisis ni rastreo de ningún tipo. No tiene formularios.',
+      'La única forma de contactarnos desde este sitio es por teléfono, texto o correo. Usamos lo que nos envía solo para responderle y hacer el trabajo que nos pide. No vendemos ni compartimos su información con nadie.',
+      'Si más adelante agregamos análisis o un formulario de contacto, esta página dirá exactamente qué cambió.',
+    ],
+    q: 'Preguntas:',
+    updated: 'Última actualización: septiembre de 2026.',
+  },
+}[lang];
+---
+<Base lang={lang} title={copy.title} description={copy.description} path={pageUrl('privacy', lang)} altPath={pageUrl('privacy', other(lang))}>
+  <section class="section theme-dark">
+    <div class="wrap narrow">
+      <h1 class="h-1">{copy.h1}</h1>
+      {copy.p.map((p) => <p class="body dim">{p}</p>)}
+      <p class="body">{copy.q} <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p class="small dim">{copy.updated}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow { max-width: 68ch; }
+  .body { margin-top: var(--s3); }
+  .link { color: var(--orange); border-bottom: 1px solid currentColor; }
+  .small { margin-top: var(--s4); }
+</style>

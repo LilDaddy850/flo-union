@@ -1,0 +1,51 @@
+---
+import Photo from './Photo.astro';
+import { services } from '../data/services';
+import { href, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section theme-light" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">{t(lang, 'services.eyebrow')}</p>
+      <h2 class="h-1">{t(lang, 'services.title')}</h2>
+    </div>
+    <div class="rows">
+      {services.map((s, i) => (
+        <a class:list={['row reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]} href={href(pageUrl('services', lang, s.slug[lang]))}>
+          <div class="thumb"><Photo stem={s.hero} lang={lang} widths={[240, 480]} sizes="140px" /></div>
+          <div class="body">
+            <p class="eyebrow idx">0{i + 1}</p>
+            <h3 class="h-2">{s.name[lang]}</h3>
+          </div>
+          <p class="short">{s.short[lang]}</p>
+          <span class="more">{t(lang, 'services.more')} →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .rows { border-top: 1px solid var(--line); }
+  .row {
+    display: grid; grid-template-columns: 140px 1.2fr 1fr auto; gap: var(--s4); align-items: center;
+    padding: var(--s4) 0; border-bottom: 1px solid var(--line);
+    transition: background 0.3s var(--ease);
+  }
+  .row:hover { background: rgba(28, 28, 30, 0.03); }
+  .thumb { width: 140px; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+  .row:hover .thumb :global(img) { transform: scale(1.05); }
+  .idx { margin-bottom: 8px; color: var(--dim); }
+  .short { color: var(--dim); max-width: 42ch; }
+  .more { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+  @media (max-width: 899px) {
+    .row { grid-template-columns: 96px 1fr; gap: var(--s3); }
+    .thumb { width: 96px; }
+    .short { grid-column: 2; }
+    .more { grid-column: 2; }
+  }
+</style>

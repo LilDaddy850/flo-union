@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import ServiceRows from '../components/ServiceRows.astro';
+import ProjectsScatter from '../components/ProjectsScatter.astro';
+import WhyRows from '../components/WhyRows.astro';
+import ColorSwatches from '../components/ColorSwatches.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { projects, featured } from '../data/projects';
+import { faq } from '../data/faq';
+import { site } from '../data/site';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const meta = {
+  en: {
+    title: 'Seamless Gutters in Central Florida & Tampa | Flo Union LLC',
+    description: '6-inch seamless gutters made on site. Licensed and insured, free same-day estimates, most homes done in one day. Over 500 homes. Call or text 689-267-7320.',
+  },
+  es: {
+    title: 'Canaletas sin costura en Florida Central y Tampa | Flo Union LLC',
+    description: 'Canaletas sin costura de 6 pulgadas hechas en el sitio. Licencia y seguro, estimados gratis el mismo día, la mayoría de las casas en un día. Más de 500 casas. Llame o mande un texto al 689-267-7320.',
+  },
+}[lang];
+
+const items = featured.map((slug) => projects.find((p) => p.slug === slug)!);
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('home', lang)} altPath={pageUrl('home', other(lang))}>
+  <Hero lang={lang} />
+  <Stats lang={lang} />
+  <ServiceRows lang={lang} />
+  <ProjectsScatter lang={lang} items={items} showAll />
+  <WhyRows lang={lang} />
+  <ColorSwatches lang={lang} />
+  <AreaMap lang={lang} />
+  <Faq lang={lang} items={faq.slice(0, 6)} linkAll />
+  <CtaBand lang={lang} />
+</Base>

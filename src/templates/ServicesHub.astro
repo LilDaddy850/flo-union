@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import ServiceRows from '../components/ServiceRows.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const meta = {
+  en: { title: 'Seamless Gutter Services | Flo Union LLC', description: 'Seamless gutter installation, replacement, gutter guards, and commercial and HOA work across Central Florida and Tampa. Free same-day estimates.' },
+  es: { title: 'Servicios de canaletas sin costura | Flo Union LLC', description: 'Instalación y reemplazo de canaletas sin costura, protectores, y trabajo comercial y de HOA en Florida Central y Tampa. Estimados gratis el mismo día.' },
+}[lang];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('services', lang)} altPath={pageUrl('services', other(lang))}>
+  <section class="section theme-dark page-head">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'nav.services')}</p>
+      <h1 class="h-hero">{t(lang, 'services.title')}</h1>
+    </div>
+  </section>
+  <ServiceRows lang={lang} />
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .page-head { padding-block: var(--s6) var(--s5); }
+  .page-head .eyebrow { margin-bottom: var(--s3); }
+</style>

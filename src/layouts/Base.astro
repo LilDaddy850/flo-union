@@ -1,0 +1,88 @@
+---
+import '@fontsource/michroma';
+import '@fontsource/barlow/400.css';
+import '@fontsource/barlow/500.css';
+import '@fontsource/barlow-semi-condensed/600.css';
+import '@fontsource/barlow-semi-condensed/700.css';
+import '@fontsource/barlow-semi-condensed/800.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyBar from '../components/StickyBar.astro';
+import FlowLine from '../components/FlowLine.astro';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  path: string;
+  altPath: string;
+  jsonLd?: object[];
+}
+const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo {lang} {title} {description} {path} {altPath} {jsonLd} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t(lang, 'skip')}</a>
+    <Header {lang} {altPath} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer {lang} {altPath} />
+    <StickyBar {lang} />
+    <FlowLine />
+    <div class="grain" aria-hidden="true"></div>
+    <script>
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // reveal on scroll
+      const revealed = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              revealed.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => revealed.observe(el));
+
+      // count-up numerals
+      const counted = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            counted.unobserve(e.target);
+            const el = e.target as HTMLElement;
+            const target = Number(el.dataset.count || '0');
+            const suffix = el.dataset.suffix || '';
+            if (reduced) { el.textContent = target + suffix; continue; }
+            const t0 = performance.now();
+            const dur = 1200;
+            const tick = (now: number) => {
+              const p = Math.min(1, (now - t0) / dur);
+              const eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = Math.round(target * eased) + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }
+        },
+        { threshold: 0.6 }
+      );
+      document.querySelectorAll('[data-count]').forEach((el) => counted.observe(el));
+    </script>
+  </body>
+</html>

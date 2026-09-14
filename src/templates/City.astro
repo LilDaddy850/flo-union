@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import type { City } from '../data/cities';
+import { site, process } from '../data/site';
+import { services } from '../data/services';
+import { faq } from '../data/faq';
+import { absUrl, href, other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; city: City; }
+const { lang, city } = Astro.props;
+const path = pageUrl('area', lang, city.slug);
+const altPath = pageUrl('area', other(lang), city.slug);
+const h1 = t(lang, 'city.h1', { city: city.name });
+const meta = {
+  en: { title: `Seamless Gutters in ${city.name}, FL | Flo Union LLC`, description: `Seamless gutter installation and replacement in ${city.name}, FL (${city.county} County). Free same-day estimates, licensed and insured, most homes done in one day. Call or text 689-267-7320.` },
+  es: { title: `Canaletas sin costura en ${city.name}, FL | Flo Union LLC`, description: `Instalación y reemplazo de canaletas sin costura en ${city.name}, FL (Condado de ${city.county}). Estimados gratis el mismo día, licencia y seguro, la mayoría de las casas en un día. Llame o mande un texto al 689-267-7320.` },
+}[lang];
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: h1,
+  serviceType: 'Seamless gutter installation',
+  url: absUrl(site.url, path),
+  provider: { '@id': site.url + '/#business' },
+  areaServed: { '@type': 'City', name: `${city.name}, FL` },
+}];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={path} altPath={altPath} jsonLd={jsonLd}>
+  <section class="section theme-dark city-hero">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'city.eyebrow', { city: city.name })} · {city.county} {t(lang, 'area.county')}</p>
+      <h1 class="h-hero">{h1}</h1>
+      <p class="lead">{t(lang, 'city.intro')}</p>
+      <div class="lines">
+        {city.lines.map((l) => <p>{l[lang]}</p>)}
+      </div>
+      <div class="ctas">
+        <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+        <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-light">
+    <div class="wrap svc">
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'nav.services')}</p>
+        <h2 class="h-1">{t(lang, 'services.title')}</h2>
+      </div>
+      <ul class="svc-list reveal reveal-d1">
+        {services.map((s) => <li><a href={href(pageUrl('services', lang, s.slug[lang]))}>{s.name[lang]}<span>→</span></a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section theme-light process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'process.eyebrow')}</p>
+        <h2 class="h-1">{t(lang, 'process.title')}</h2>
+      </div>
+      <ol class="steps">
+        {process.map((p, i) => (
+          <li class:list={['step reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+            <span class="eyebrow n">0{i + 1}</span>
+            <p>{p[lang]}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <PhotoGrid lang={lang} stems={city.photos} eyebrow={t(lang, 'city.photosTitle')} />
+  <Faq lang={lang} items={[faq[0], faq[1], faq[4]]} theme="light" linkAll />
+  <CtaBand lang={lang} />
+
+  <section class="theme-dark back">
+    <div class="wrap"><a href={href(pageUrl('area', lang))}>← {t(lang, 'city.back')}</a></div>
+  </section>
+</Base>
+
+<style>
+  .city-hero { padding-block: var(--s5) var(--s6); }
+  .city-hero .eyebrow { margin-bottom: var(--s3); }
+  .city-hero .lead { margin-top: var(--s3); }
+  .lines { margin-top: var(--s4); max-width: var(--measure); border-left: 2px solid var(--orange); padding-left: var(--s3); }
+  .lines p { color: var(--dim-on-dark); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
+  .svc { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--s5); align-items: start; }
+  .svc .section-head { margin-bottom: 0; }
+  .svc-list { border-top: 1px solid var(--line); }
+  .svc-list a { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); font-family: var(--f-head); font-weight: 700; font-size: clamp(1.3rem, 2vw, 1.8rem); transition: color 0.2s; }
+  .svc-list a:hover { color: var(--copper); }
+  .svc-list span { color: var(--orange); }
+  .process { padding-top: 0; }
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s3); border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .step .n { display: block; margin-bottom: 12px; }
+  .step p { color: var(--dim); font-size: var(--t-small); }
+  .back { padding: var(--s3) 0 0; }
+  .back a { font-family: var(--f-label); font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim-on-dark); }
+  @media (max-width: 899px) {
+    .svc { grid-template-columns: 1fr; gap: var(--s3); }
+    .steps { grid-template-columns: 1fr; }
+    .step { display: grid; grid-template-columns: 48px 1fr; gap: 12px; }
+    .step .n { margin: 0; padding-top: 4px; }
+  }
+</style>

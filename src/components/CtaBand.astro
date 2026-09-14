@@ -1,0 +1,31 @@
+---
+import { site } from '../data/site';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section theme-brand band" id="estimate">
+  <div class="wrap band-grid">
+    <div class="reveal">
+      <h2 class="h-hero band-title">{t(lang, 'cta.bandTitle')}</h2>
+      <p class="band-sub">{t(lang, 'cta.bandSub')}</p>
+    </div>
+    <div class="band-ctas reveal reveal-d1">
+      <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+      <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+      <a class="band-email" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band { padding-block: clamp(72px, 10vw, 140px); }
+  .band-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s5); align-items: center; }
+  .band-title { max-width: 10ch; }
+  .band-sub { margin-top: var(--s3); font-size: clamp(1.125rem, 1.6vw, 1.375rem); color: var(--dim); }
+  .band-ctas { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .band-ctas .btn { min-width: 280px; }
+  .band-email { font-family: var(--f-head); font-weight: 600; font-size: 1.15rem; color: var(--charcoal); margin-top: 8px; border-bottom: 1px solid rgba(28,28,30,0.35); }
+  @media (max-width: 899px) { .band-grid { grid-template-columns: 1fr; } .band-ctas .btn { min-width: 0; width: 100%; } .band-ctas { align-items: stretch; } }
+</style>

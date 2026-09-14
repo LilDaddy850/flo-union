@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { faq } from '../data/faq';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const meta = {
+  en: { title: 'Seamless Gutter FAQ | Flo Union LLC', description: 'Cost, how long it takes, why seamless, gutter guards, what is included, and our free-fix warranty. Straight answers from Flo Union LLC.' },
+  es: { title: 'Preguntas frecuentes sobre canaletas | Flo Union LLC', description: 'Costo, cuánto tarda, por qué sin costura, protectores, qué incluye y nuestra garantía de arreglo gratis. Respuestas directas de Flo Union LLC.' },
+}[lang];
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q[lang], acceptedAnswer: { '@type': 'Answer', text: f.a[lang] } })),
+}];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('faq', lang)} altPath={pageUrl('faq', other(lang))} jsonLd={jsonLd}>
+  <section class="theme-dark page-head">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'faq.eyebrow')}</p>
+      <h1 class="h-hero">{t(lang, 'faq.title')}</h1>
+    </div>
+  </section>
+  <Faq lang={lang} items={faq} title={t(lang, 'faq.all')} eyebrow={t(lang, 'nav.faq')} />
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .page-head { padding-block: var(--s6) 0; }
+  .page-head .eyebrow { margin-bottom: var(--s3); }
+</style>

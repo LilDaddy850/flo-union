@@ -1,0 +1,133 @@
+---
+import { getImage } from 'astro:assets';
+import posterSrc from '../assets/hero-poster.jpg';
+import mark from '../assets/brand/mark.png';
+import { site } from '../data/site';
+import { href, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const poster = await getImage({ src: posterSrc, width: 720, format: 'webp', quality: 68 });
+---
+<section class="hero theme-dark">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <img src={mark.src} width={mark.width} height={mark.height} alt="" class="hero-mark" />
+      <p class="eyebrow hero-eyebrow">{t(lang, 'hero.eyebrow')}</p>
+      <h1 class="h-hero">{t(lang, 'hero.h1')}</h1>
+      <p class="lead hero-sub">{t(lang, 'hero.sub')}</p>
+      <div class="hero-ctas">
+        <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+        <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <video
+        muted autoplay loop playsinline preload="none"
+        poster={poster.src}
+        width="540" height="960"
+        aria-label={t(lang, 'hero.videoLabel')}
+      >
+        <source src={href('/video/hero.mp4')} type="video/mp4" />
+      </video>
+      <canvas class="rain" aria-hidden="true"></canvas>
+      <div class="hero-shade" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+    min-height: min(88vh, 900px);
+    padding-block: var(--s6);
+  }
+  .hero-copy { position: relative; z-index: 2; }
+  .hero-mark {
+    height: 92px; width: auto; margin-bottom: var(--s4);
+    clip-path: inset(0 0 100% 0);
+    animation: wipe 0.6s var(--ease) 0.15s forwards;
+  }
+  @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+  .hero-eyebrow { margin-bottom: var(--s3); }
+  .h-hero { max-width: 12ch; }
+  .hero-sub { margin-top: var(--s3); }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
+  .hero-media {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    max-height: 78vh;
+    justify-self: end;
+    width: 100%;
+    max-width: 440px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  }
+  .hero-media video { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9) contrast(1.05); }
+  .rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,28,30,0.1), rgba(28,28,30,0.45)); pointer-events: none; }
+
+  @media (max-width: 899px) {
+    .hero-grid { grid-template-columns: 1fr; min-height: 0; padding-block: 0; gap: 0; }
+    .hero-media {
+      position: absolute; inset: 0; max-width: none; max-height: none; aspect-ratio: auto;
+      border-radius: 0; box-shadow: none; justify-self: stretch;
+    }
+    .hero-shade { background: linear-gradient(180deg, rgba(28,28,30,0.55), rgba(28,28,30,0.82)); }
+    .hero-copy { padding: var(--s6) 0 var(--s5); min-height: 86svh; display: flex; flex-direction: column; justify-content: flex-end; }
+    .hero-mark { height: 72px; }
+    .hero-ctas .btn { flex: 1 1 100%; }
+  }
+</style>
+
+<script>
+  const c = document.querySelector<HTMLCanvasElement>('canvas.rain');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (c && !reduced) {
+    const ctx = c.getContext('2d')!;
+    type Drop = { x: number; y: number; l: number; v: number; a: number };
+    let w = 0, h = 0, raf = 0, on = false, inView = false;
+    let drops: Drop[] = [];
+    const N = 110;
+    const make = (init: boolean): Drop => ({
+      x: Math.random() * (w + 80) - 40,
+      y: init ? Math.random() * h : -40,
+      l: 14 + Math.random() * 22,
+      v: 7 + Math.random() * 7,
+      a: 0.1 + Math.random() * 0.22,
+    });
+    const size = () => {
+      const d = Math.min(devicePixelRatio || 1, 2);
+      w = c.clientWidth; h = c.clientHeight;
+      c.width = w * d; c.height = h * d;
+      ctx.setTransform(d, 0, 0, d, 0, 0);
+      drops = Array.from({ length: N }, () => make(true));
+    };
+    const frame = () => {
+      ctx.clearRect(0, 0, w, h);
+      ctx.lineWidth = 1;
+      for (const d of drops) {
+        ctx.strokeStyle = `rgba(244,241,236,${d.a})`;
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x - d.l * 0.18, d.y + d.l);
+        ctx.stroke();
+        d.y += d.v; d.x -= d.v * 0.18;
+        if (d.y > h + 40) Object.assign(d, make(false));
+      }
+      if (on) raf = requestAnimationFrame(frame);
+    };
+    const start = () => { if (on || !inView || document.hidden) return; on = true; raf = requestAnimationFrame(frame); };
+    const stop = () => { on = false; cancelAnimationFrame(raf); };
+    size();
+    addEventListener('resize', size);
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; inView ? start() : stop(); }).observe(c);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+  }
+</script>

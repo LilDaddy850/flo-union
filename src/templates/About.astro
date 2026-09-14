@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Stats from '../components/Stats.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, process } from '../data/site';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'About Flo Union LLC | Seamless Gutters, Central Florida',
+    description: 'Jay Cabrera and a crew with 20+ years of combined experience. Over 500 homes, condo buildings, and whole communities. Licensed and insured. Hablamos español.',
+    h1: 'The people doing the work.',
+    p1: 'Flo Union is Jay Cabrera and a crew with more than 20 years of combined experience hanging gutters in Central Florida. Over 500 homes, plus condo buildings and whole communities.',
+    p2: 'We run 6-inch seamless aluminum on site, hang it with hidden hangers and screws, and set the downspouts where the water needs to go. We answer our own phone, we show up when we say we will, and if our work ever has a problem, we fix it free.',
+    p3: 'Licensed and insured. Open 7 days a week. Hablamos español.',
+    since: 'Flo Union LLC, since',
+  },
+  es: {
+    title: 'Sobre Flo Union LLC | Canaletas sin costura, Florida Central',
+    description: 'Jay Cabrera y un equipo con más de 20 años de experiencia combinada. Más de 500 casas, edificios de condominios y comunidades completas. Licencia y seguro. Hablamos español.',
+    h1: 'La gente que hace el trabajo.',
+    p1: 'Flo Union es Jay Cabrera y un equipo con más de 20 años de experiencia combinada instalando canaletas en Florida Central. Más de 500 casas, además de edificios de condominios y comunidades completas.',
+    p2: 'Hacemos aluminio sin costura de 6 pulgadas en el sitio, lo montamos con soportes ocultos y tornillos, y colocamos los bajantes donde el agua debe ir. Contestamos nuestro propio teléfono, llegamos cuando decimos que vamos a llegar, y si nuestro trabajo alguna vez tiene un problema, lo arreglamos gratis.',
+    p3: 'Licencia y seguro. Abierto los 7 días de la semana. Hablamos español e inglés.',
+    since: 'Flo Union LLC, desde',
+  },
+}[lang];
+---
+<Base lang={lang} title={copy.title} description={copy.description} path={pageUrl('about', lang)} altPath={pageUrl('about', other(lang))}>
+  <section class="section theme-dark about-hero">
+    <div class="wrap grid">
+      <div>
+        <p class="eyebrow">{t(lang, 'about.eyebrow')}</p>
+        <h1 class="h-hero">{copy.h1}</h1>
+        <p class="lead">{copy.p1}</p>
+        <p class="body">{copy.p2}</p>
+        <p class="body strong">{copy.p3}</p>
+        {site.founded && <p class="small dim">{copy.since} {site.founded}.</p>}
+        <div class="ctas">
+          <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+          <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+        </div>
+      </div>
+      <div class="media">
+        <Photo stem="condo-01" lang={lang} loading="eager" widths={[600, 900, 1400]} sizes="(max-width: 899px) 100vw, 44vw" />
+      </div>
+    </div>
+  </section>
+  <Stats lang={lang} />
+  <section class="section theme-light process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'process.eyebrow')}</p>
+        <h2 class="h-1">{t(lang, 'process.title')}</h2>
+      </div>
+      <ol class="steps">
+        {process.map((p, i) => (
+          <li class:list={['step reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+            <span class="eyebrow n">0{i + 1}</span>
+            <p>{p[lang]}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .about-hero { padding-block: var(--s5) var(--s6); }
+  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--s5); align-items: center; }
+  .grid .eyebrow { margin-bottom: var(--s3); }
+  .lead { margin-top: var(--s3); }
+  .body { margin-top: var(--s3); max-width: var(--measure); color: var(--dim-on-dark); }
+  .strong { color: var(--text-light); font-weight: 500; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
+  .media { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 5; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+  .media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .process { padding-top: 0; }
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s3); border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .step .n { display: block; margin-bottom: 12px; }
+  .step p { color: var(--dim); font-size: var(--t-small); }
+  @media (max-width: 899px) {
+    .grid { grid-template-columns: 1fr; }
+    .media { aspect-ratio: 4 / 3; order: -1; }
+    .steps { grid-template-columns: 1fr; }
+    .step { display: grid; grid-template-columns: 48px 1fr; gap: 12px; }
+    .step .n { margin: 0; padding-top: 4px; }
+  }
+</style>

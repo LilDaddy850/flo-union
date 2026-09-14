@@ -1,0 +1,77 @@
+---
+import lockup from '../assets/brand/lockup.png';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { cities } from '../data/cities';
+import { href, other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; altPath: string; }
+const { lang, altPath } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer theme-dark">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src={lockup.src} width={lockup.width} height={lockup.height} alt={site.name} class="foot-logo" />
+        <a class="foot-phone" href={`tel:${site.phoneE164}`}>{site.phone}</a>
+        <a class="foot-email" href={`mailto:${site.email}`}>{site.email}</a>
+        <p class="small dim">{t(lang, 'footer.hours')} · {t(lang, 'footer.spanish')}</p>
+        <p class="small dim">{site.area[lang]}</p>
+        {site.license && <p class="small dim">{t(lang, 'footer.license')} {site.license}</p>}
+      </div>
+
+      <div>
+        <p class="foot-head">{t(lang, 'footer.services')}</p>
+        <ul>
+          {services.map((s) => <li><a href={href(pageUrl('services', lang, s.slug[lang]))}>{s.name[lang]}</a></li>)}
+          <li><a href={href(pageUrl('projects', lang))}>{t(lang, 'nav.projects')}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="foot-head">{t(lang, 'footer.cities')}</p>
+        <ul class="foot-cities">
+          {cities.map((c) => <li><a href={href(pageUrl('area', lang, c.slug))}>{c.name}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <p class="foot-head">{t(lang, 'footer.company')}</p>
+        <ul>
+          <li><a href={href(pageUrl('about', lang))}>{t(lang, 'nav.about')}</a></li>
+          <li><a href={href(pageUrl('faq', lang))}>{t(lang, 'nav.faq')}</a></li>
+          <li><a href={href(pageUrl('contact', lang))}>{t(lang, 'nav.contact')}</a></li>
+          <li><a href={href(pageUrl('privacy', lang))}>{t(lang, 'footer.privacy')}</a></li>
+          <li><a href={href(altPath)} lang={other(lang)}>{t(lang, 'lang.switch')}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="hairline" />
+    <p class="foot-legal small dim">© {year} {site.name}. {t(lang, 'footer.rights')}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding: var(--s6) 0 calc(var(--s5) + 8px); }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr 1fr; gap: var(--s5) var(--s4); margin-bottom: var(--s5); }
+  .foot-logo { width: 190px; height: auto; margin-bottom: var(--s3); opacity: 0.95; }
+  .foot-phone { display: block; font-family: var(--f-head); font-weight: 700; font-size: 1.6rem; letter-spacing: 0.01em; }
+  .foot-email { display: block; color: var(--dim); margin: 6px 0 var(--s3); }
+  .foot-head { font-family: var(--f-label); font-size: 0.6875rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: var(--s2); }
+  ul li { padding: 5px 0; }
+  ul a { color: var(--dim); transition: color 0.2s; }
+  ul a:hover { color: var(--text-light); }
+  .foot-cities { columns: 2; column-gap: var(--s3); }
+  .foot-legal { margin-top: var(--s3); }
+  @media (max-width: 899px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .foot-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 480px) {
+    .foot-grid { grid-template-columns: 1fr; }
+    .foot-cities { columns: 2; }
+  }
+</style>

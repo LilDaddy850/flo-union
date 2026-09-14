@@ -1,0 +1,41 @@
+---
+import { cities } from '../data/cities';
+import { href, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const groups = new Map<string, typeof cities>();
+for (const c of cities) {
+  if (!groups.has(c.county)) groups.set(c.county, []);
+  groups.get(c.county)!.push(c);
+}
+---
+<section class="section theme-light" id="area">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">{t(lang, 'area.eyebrow')}</p>
+      <h2 class="h-1">{t(lang, 'area.title')}</h2>
+      <p class="lead">{t(lang, 'area.sub')}</p>
+    </div>
+    <div class="counties">
+      {[...groups.entries()].map(([county, list], i) => (
+        <div class:list={['county reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+          <p class="eyebrow county-name">{county} {t(lang, 'area.county')}</p>
+          <ul>
+            {list.map((c) => <li><a href={href(pageUrl('area', lang, c.slug))}>{c.name}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .counties { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .county-name { color: var(--dim); margin-bottom: var(--s2); }
+  .county li a { display: block; font-family: var(--f-head); font-weight: 700; font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.25; padding: 4px 0; transition: color 0.2s var(--ease), transform 0.3s var(--ease); }
+  .county li a:hover { color: var(--copper); transform: translateX(4px); }
+  @media (max-width: 899px) { .counties { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .counties { grid-template-columns: 1fr; } }
+</style>

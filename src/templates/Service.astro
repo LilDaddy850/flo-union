@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import type { Service } from '../data/services';
+import { site, process } from '../data/site';
+import { cities } from '../data/cities';
+import { absUrl, other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; service: Service; }
+const { lang, service: s } = Astro.props;
+const path = pageUrl('services', lang, s.slug[lang]);
+const altPath = pageUrl('services', other(lang), s.slug[other(lang)]);
+const title = `${s.name[lang]} | ${site.name}`;
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.name[lang],
+  serviceType: s.name.en,
+  description: s.short[lang],
+  url: absUrl(site.url, path),
+  provider: { '@id': site.url + '/#business' },
+  areaServed: cities.map((c) => ({ '@type': 'City', name: `${c.name}, FL` })),
+}];
+---
+<Base lang={lang} title={title} description={s.short[lang]} path={path} altPath={altPath} jsonLd={jsonLd}>
+  <section class="section theme-dark svc-hero">
+    <div class="wrap svc-grid">
+      <div>
+        <p class="eyebrow">{t(lang, 'nav.services')}</p>
+        <h1 class="h-hero">{s.name[lang]}</h1>
+        <p class="lead">{s.intro[lang]}</p>
+        <div class="ctas">
+          <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+          <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+        </div>
+      </div>
+      <div class="svc-media">
+        <Photo stem={s.hero} lang={lang} loading="eager" widths={[600, 900, 1400]} sizes="(max-width: 899px) 100vw, 44vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-light">
+    <div class="wrap two">
+      <div class="reveal">
+        <p class="eyebrow">{t(lang, 'included.title')}</p>
+        <ul class="list">{s.included.map((i) => <li>{i[lang]}</li>)}</ul>
+      </div>
+      <div class="reveal reveal-d1">
+        <p class="eyebrow">{t(lang, 'when.title')}</p>
+        <ul class="list">{s.when.map((i) => <li>{i[lang]}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-light process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'process.eyebrow')}</p>
+        <h2 class="h-1">{t(lang, 'process.title')}</h2>
+      </div>
+      <ol class="steps">
+        {process.map((p, i) => (
+          <li class:list={['step reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+            <span class="eyebrow n">0{i + 1}</span>
+            <p>{p[lang]}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <PhotoGrid lang={lang} stems={s.photos} eyebrow={t(lang, 'service.photos')} />
+  <Faq lang={lang} items={s.faq} title={t(lang, 'service.faqTitle')} theme="light" />
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .svc-hero { padding-block: var(--s5) var(--s6); }
+  .svc-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--s5); align-items: center; }
+  .svc-grid .eyebrow { margin-bottom: var(--s3); }
+  .svc-grid .lead { margin-top: var(--s3); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--s4); }
+  .svc-media { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 3; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+  .svc-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); }
+  .list { margin-top: var(--s3); border-top: 1px solid var(--line); }
+  .list li { padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--f-head); font-weight: 600; font-size: clamp(1.15rem, 1.6vw, 1.4rem); line-height: 1.25; }
+  .process { padding-top: 0; }
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s3); border-top: 1px solid var(--line); padding-top: var(--s4); }
+  .step .n { display: block; margin-bottom: 12px; }
+  .step p { color: var(--dim); font-size: var(--t-small); }
+  @media (max-width: 899px) {
+    .svc-grid, .two { grid-template-columns: 1fr; }
+    .svc-media { order: -1; }
+    .steps { grid-template-columns: 1fr; gap: var(--s3); }
+    .step { display: grid; grid-template-columns: 48px 1fr; gap: 12px; }
+    .step .n { margin: 0; padding-top: 4px; }
+  }
+</style>

@@ -1,0 +1,66 @@
+/* Flo Union design tokens. Source of truth: DESIGN.md */
+:root {
+  /* palette (from the logo) */
+  --charcoal: #1C1C1E;
+  --graphite: #2A2A2D;
+  --orange: #E8862A;
+  --copper: #B85C14;
+  --offwhite: #F4F1EC;
+  --steel: #8C8C8C;
+  --steel-dark: #5C5C60;
+  --text-dark: #1C1C1E;
+  --text-light: #F4F1EC;
+  --dim-on-dark: #B9B5AE;
+  --dim-on-light: #5C5C60;
+  --line-on-dark: rgba(244, 241, 236, 0.14);
+  --line-on-light: rgba(28, 28, 30, 0.14);
+  --grad-orange: linear-gradient(135deg, #E8862A 0%, #B85C14 100%);
+
+  /* type */
+  --f-label: 'Michroma', 'Arial Black', sans-serif;
+  --f-head: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+  --f-body: 'Barlow', Arial, sans-serif;
+  --t-hero: clamp(2.75rem, 7.2vw, 6.25rem);
+  --t-1: clamp(2.125rem, 4.6vw, 3.75rem);
+  --t-2: clamp(1.625rem, 2.8vw, 2.5rem);
+  --t-3: clamp(1.25rem, 1.8vw, 1.5rem);
+  --t-body: 1.0625rem;
+  --t-small: 0.9375rem;
+  --t-label: 0.6875rem;
+
+  /* rhythm */
+  --gutter: clamp(20px, 5vw, 72px);
+  --max: 1320px;
+  --measure: 60ch;
+  --section: clamp(80px, 11vw, 152px);
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 64px; --s6: 96px;
+
+  /* shape + motion */
+  --radius: 4px;
+  --radius-lg: 12px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.7s;
+}
+
+/* section themes: each section declares one */
+.theme-dark {
+  background: var(--charcoal);
+  color: var(--text-light);
+  --dim: var(--dim-on-dark);
+  --line: var(--line-on-dark);
+  --surface: var(--graphite);
+}
+.theme-light {
+  background: var(--offwhite);
+  color: var(--text-dark);
+  --dim: var(--dim-on-light);
+  --line: var(--line-on-light);
+  --surface: #EAE6DF;
+}
+.theme-brand {
+  background: var(--orange);
+  color: var(--charcoal);
+  --dim: #5A2E0C;
+  --line: rgba(28, 28, 30, 0.22);
+  --surface: #D97A22;
+}

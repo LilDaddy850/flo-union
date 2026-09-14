@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectsScatter from '../components/ProjectsScatter.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { projects, details } from '../data/projects';
+import { other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const meta = {
+  en: { title: 'Our Work: Seamless Gutter Projects | Flo Union LLC', description: 'Real seamless gutter jobs across Central Florida: HOA communities, condo buildings, new construction, tile roofs, bronze and white gutters. No stock photos.' },
+  es: { title: 'Nuestro trabajo: proyectos de canaletas | Flo Union LLC', description: 'Trabajos reales de canaletas sin costura en Florida Central: comunidades HOA, condominios, construcción nueva, techos de teja, canaletas bronce y blancas. Sin fotos de archivo.' },
+}[lang];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('projects', lang)} altPath={pageUrl('projects', other(lang))}>
+  <section class="theme-dark page-head">
+    <div class="wrap">
+      <p class="eyebrow">{t(lang, 'projects.eyebrow')}</p>
+      <h1 class="h-hero">{t(lang, 'projects.title')}</h1>
+    </div>
+  </section>
+  <ProjectsScatter lang={lang} items={projects} link={false} />
+  <PhotoGrid lang={lang} stems={details} eyebrow={t(lang, 'projects.details')} title={t(lang, 'projects.detailsSub')} theme="light" />
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .page-head { padding-block: var(--s6) 0; }
+  .page-head .eyebrow { margin-bottom: var(--s3); }
+  .page-head h1 { max-width: 14ch; }
+</style>

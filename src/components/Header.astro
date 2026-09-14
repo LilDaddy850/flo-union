@@ -1,0 +1,121 @@
+---
+import mark from '../assets/brand/mark.png';
+import wordmark from '../assets/brand/wordmark.png';
+import { site } from '../data/site';
+import { href, other, pageUrl, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; altPath: string; }
+const { lang, altPath } = Astro.props;
+
+const nav = [
+  { key: 'services', label: t(lang, 'nav.services') },
+  { key: 'projects', label: t(lang, 'nav.projects') },
+  { key: 'area', label: t(lang, 'nav.area') },
+  { key: 'about', label: t(lang, 'nav.about') },
+  { key: 'faq', label: t(lang, 'nav.faq') },
+  { key: 'contact', label: t(lang, 'nav.contact') },
+] as const;
+---
+<header class="site-header">
+  <div class="wrap head-row">
+    <a class="logo" href={href(pageUrl('home', lang))} aria-label={site.name}>
+      <img src={mark.src} width={mark.width} height={mark.height} alt="" class="logo-mark" />
+      <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt={site.name} class="logo-word" />
+    </a>
+
+    <nav class="head-nav" aria-label="Main">
+      {nav.map((n) => <a href={href(pageUrl(n.key, lang))}>{n.label}</a>)}
+    </nav>
+
+    <div class="head-actions">
+      <a class="lang" href={href(altPath)} lang={other(lang)} aria-label={t(lang, 'lang.switch')}>{t(lang, 'lang.switchShort')}</a>
+      <a class="phone" href={`tel:${site.phoneE164}`}>{site.phone}</a>
+      <a class="btn call" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.call')}</a>
+      <label for="menu-toggle" class="burger" aria-label={t(lang, 'nav.menu')}>
+        <span></span><span></span><span></span>
+      </label>
+    </div>
+  </div>
+
+  <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true" />
+  <div class="menu-panel">
+    <div class="wrap">
+      <nav aria-label="Mobile">
+        {nav.map((n) => <a href={href(pageUrl(n.key, lang))}>{n.label}</a>)}
+      </nav>
+      <div class="menu-ctas">
+        <a class="btn" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.callNumber')}</a>
+        <a class="btn ghost" href={`sms:${site.phoneE164}`}>{t(lang, 'cta.text')}</a>
+        <a class="menu-lang" href={href(altPath)} lang={other(lang)}>{t(lang, 'lang.switch')}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 100;
+    background: rgba(28, 28, 30, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(244, 241, 236, 0.08);
+    color: var(--text-light);
+  }
+  .head-row { display: flex; align-items: center; gap: 28px; min-height: 76px; }
+  .logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .logo-mark { height: 40px; width: auto; }
+  .logo-word { height: 11px; width: auto; opacity: 0.92; }
+  .head-nav { display: flex; gap: 4px; margin-inline: auto; }
+  .head-nav a, .lang {
+    font-family: var(--f-label);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim-on-dark);
+    padding: 10px 12px;
+    position: relative;
+    transition: color 0.25s var(--ease);
+  }
+  .head-nav a::after {
+    content: ''; position: absolute; left: 12px; right: 12px; bottom: 5px; height: 1px;
+    background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
+  }
+  .head-nav a:hover { color: var(--text-light); }
+  .head-nav a:hover::after { transform: scaleX(1); }
+  .head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .lang { border: 1px solid rgba(244, 241, 236, 0.18); border-radius: var(--radius); padding: 9px 10px; }
+  .lang:hover { color: var(--text-light); border-color: rgba(244, 241, 236, 0.4); }
+  .phone { font-family: var(--f-head); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.02em; padding: 0 8px; color: var(--text-light); }
+  .call { min-height: 44px; padding: 0 22px; }
+  .burger { display: none; width: 44px; height: 44px; flex-direction: column; justify-content: center; gap: 5px; align-items: center; cursor: pointer; border-radius: var(--radius); }
+  .burger span { display: block; width: 22px; height: 2px; background: var(--text-light); transition: transform 0.3s var(--ease), opacity 0.3s; }
+  .menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
+  .menu-panel { display: none; background: var(--charcoal); border-top: 1px solid rgba(244, 241, 236, 0.08); }
+  .menu-panel nav { display: flex; flex-direction: column; padding: 12px 0; }
+  .menu-panel nav a {
+    font-family: var(--f-head); font-weight: 700; font-size: 1.75rem; padding: 12px 0;
+    border-bottom: 1px solid rgba(244, 241, 236, 0.08);
+  }
+  .menu-ctas { display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 0 28px; align-items: center; }
+  .menu-lang { font-family: var(--f-label); font-size: 0.6875rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim-on-dark); padding: 10px 4px; }
+  .menu-toggle:checked ~ .menu-panel { display: block; }
+
+  @media (min-width: 1100px) {
+    .site-header { position: sticky; top: 0; }
+  }
+  @media (max-width: 1099px) {
+    .head-nav { display: none; }
+    .phone { display: none; }
+    .burger { display: flex; }
+    .site-header:has(.menu-toggle:checked) .burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .site-header:has(.menu-toggle:checked) .burger span:nth-child(2) { opacity: 0; }
+    .site-header:has(.menu-toggle:checked) .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  }
+  @media (max-width: 599px) {
+    .head-row { min-height: 66px; gap: 12px; }
+    .logo-mark { height: 34px; }
+    .logo-word { display: none; }
+    .call { display: none; }
+  }
+</style>
