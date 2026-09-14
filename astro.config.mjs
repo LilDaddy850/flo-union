@@ -10,5 +10,5 @@ export default defineConfig({
     locales: ['en', 'es'],
     routing: { prefixDefaultLocale: false },
   },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/intro-lab/') })],
 });

@@ -5,3 +5,6 @@ docs/
 raw/
 .DS_Store
 *.log
+
+# local-only lab page for the scroll intro
+src/pages/intro-lab.astro
