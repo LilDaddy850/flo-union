@@ -50,6 +50,7 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
       scrub: 0.6,
       snap: { snapTo: 'labels', duration: { min: 0.25, max: 0.7 }, delay: 0.05, ease: 'power2.inOut', directional: true },
       invalidateOnRefresh: true,
+      onToggle: (self) => { document.documentElement.style.scrollBehavior = self.isActive ? 'auto' : ''; },
     },
   });
   const proxy = { t: 0 };
