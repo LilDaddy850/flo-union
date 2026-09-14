@@ -42,15 +42,15 @@ const en = {
   'cta.tapCall': 'Call',
   'cta.tapText': 'Text',
 
-  'hero.eyebrow': 'Seamless gutters · Central Florida & Tampa',
+  'hero.eyebrow': 'Seamless gutters · Central Florida, Tampa & Sarasota',
   'hero.h1': 'Seamless gutters, made on site, fit to your house.',
-  'hero.sub': 'Licensed and insured. Free same-day estimates. Over 500 homes done.',
+  'hero.sub': 'Registered and insured. Free same-day estimates. Over 500 homes done.',
   'hero.videoLabel': 'Our crew installing seamless gutters',
 
   'stats.homes': 'homes done',
   'stats.years': 'years combined experience',
-  'stats.licensed': 'Licensed & insured',
-  'stats.licensedSub': 'Florida',
+  'stats.licensed': 'Registered & insured',
+  'stats.licensedSub': 'Certificate on request',
   'stats.free': 'Free estimates',
   'stats.freeSub': 'Same day',
 
@@ -74,7 +74,7 @@ const en = {
   'colors.sub': 'Ask about other colors on your estimate.',
 
   'area.eyebrow': 'Where we work',
-  'area.title': 'Central Florida and Tampa.',
+  'area.title': 'Central Florida, Tampa, and Sarasota.',
   'area.sub': 'Pick your city.',
   'area.county': 'County',
 
@@ -87,7 +87,7 @@ const en = {
 
   'footer.hours': 'Open 7 days a week',
   'footer.spanish': 'Hablamos español',
-  'footer.license': 'License',
+  'footer.license': 'Florida LLC',
   'footer.services': 'Services',
   'footer.cities': 'Cities',
   'footer.company': 'Company',
@@ -104,7 +104,7 @@ const en = {
 
   'city.h1': 'Seamless gutters in {city}, FL',
   'city.eyebrow': 'Serving {city}',
-  'city.intro': 'Free on-site estimates the same day. Most homes done in one day. Licensed and insured.',
+  'city.intro': 'Free on-site estimates the same day. Most homes done in one day. Registered and insured.',
   'city.photosTitle': 'Recent work',
   'city.back': 'All service areas',
 
@@ -166,15 +166,15 @@ const es: Record<UiKey, string> = {
   'cta.tapCall': 'Llamar',
   'cta.tapText': 'Texto',
 
-  'hero.eyebrow': 'Canaletas sin costura · Florida Central y Tampa',
+  'hero.eyebrow': 'Canaletas sin costura · Florida Central, Tampa y Sarasota',
   'hero.h1': 'Canaletas sin costura, hechas en el sitio, a la medida de su casa.',
-  'hero.sub': 'Con licencia y seguro. Estimados gratis el mismo día. Más de 500 casas terminadas.',
+  'hero.sub': 'Registrados y asegurados. Estimados gratis el mismo día. Más de 500 casas terminadas.',
   'hero.videoLabel': 'Nuestro equipo instalando canaletas sin costura',
 
   'stats.homes': 'casas terminadas',
   'stats.years': 'años de experiencia combinada',
-  'stats.licensed': 'Licencia y seguro',
-  'stats.licensedSub': 'Florida',
+  'stats.licensed': 'Registrados y asegurados',
+  'stats.licensedSub': 'Certificado a pedido',
   'stats.free': 'Estimados gratis',
   'stats.freeSub': 'El mismo día',
 
@@ -198,7 +198,7 @@ const es: Record<UiKey, string> = {
   'colors.sub': 'Pregunte por otros colores en su estimado.',
 
   'area.eyebrow': 'Dónde trabajamos',
-  'area.title': 'Florida Central y Tampa.',
+  'area.title': 'Florida Central, Tampa y Sarasota.',
   'area.sub': 'Elija su ciudad.',
   'area.county': 'Condado',
 
@@ -211,7 +211,7 @@ const es: Record<UiKey, string> = {
 
   'footer.hours': 'Abierto los 7 días de la semana',
   'footer.spanish': 'Hablamos español',
-  'footer.license': 'Licencia',
+  'footer.license': 'LLC de Florida',
   'footer.services': 'Servicios',
   'footer.cities': 'Ciudades',
   'footer.company': 'Empresa',
@@ -228,7 +228,7 @@ const es: Record<UiKey, string> = {
 
   'city.h1': 'Canaletas sin costura en {city}, FL',
   'city.eyebrow': 'Servicio en {city}',
-  'city.intro': 'Estimados gratis en su casa el mismo día. La mayoría de las casas en un día. Con licencia y seguro.',
+  'city.intro': 'Estimados gratis en su casa el mismo día. La mayoría de las casas en un día. Registrados y asegurados.',
   'city.photosTitle': 'Trabajos recientes',
   'city.back': 'Todas las áreas de servicio',
 

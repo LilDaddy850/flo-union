@@ -8,8 +8,8 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const meta = {
-  en: { title: 'Seamless Gutter Services | Flo Union LLC', description: 'Seamless gutter installation, replacement, gutter guards, and commercial and HOA work across Central Florida and Tampa. Free same-day estimates.' },
-  es: { title: 'Servicios de canaletas sin costura | Flo Union LLC', description: 'Instalación y reemplazo de canaletas sin costura, protectores, y trabajo comercial y de HOA en Florida Central y Tampa. Estimados gratis el mismo día.' },
+  en: { title: 'Seamless Gutter Services | Flo Union LLC', description: 'Seamless gutter installation, replacement, gutter guards, and commercial and HOA work across Central Florida, Tampa, and Sarasota. Free same-day estimates.' },
+  es: { title: 'Servicios de canaletas sin costura | Flo Union LLC', description: 'Instalación y reemplazo de canaletas sin costura, protectores, y trabajo comercial y de HOA en Florida Central, Tampa y Sarasota. Estimados gratis el mismo día.' },
 }[lang];
 ---
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('services', lang)} altPath={pageUrl('services', other(lang))}>

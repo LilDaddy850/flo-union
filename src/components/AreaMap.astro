@@ -12,7 +12,7 @@ for (const c of cities) {
   groups.get(c.county)!.push(c);
 }
 // dots that get a printed name on the map, and which side the name sits on
-const labelSide: Record<string, 'l' | 'r'> = { Tampa: 'r', Orlando: 'r', 'Daytona Beach': 'r', Melbourne: 'l', Lakeland: 'r', 'The Villages': 'r' };
+const labelSide: Record<string, 'l' | 'r'> = { Tampa: 'r', Orlando: 'r', 'Daytona Beach': 'r', Melbourne: 'l', Lakeland: 'r', 'The Villages': 'r', Sarasota: 'r', Venice: 'r' };
 ---
 <section class:list={['section theme-light', !heading && 'no-head']} id="area">
   <div class="wrap">

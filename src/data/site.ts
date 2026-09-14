@@ -9,17 +9,17 @@ export const site = {
   phoneE164: '+16892677320',
   email: 'jayflounion@gmail.com',
   hours: { en: '7 days a week', es: 'los 7 días de la semana' } as L,
-  license: '', // TODO_JAY: license number (and type). Renders nothing while blank.
-  founded: '', // TODO_JAY: year Flo Union LLC started. Renders nothing while blank.
-  city: 'Orlando',
+  license: 'L23000363697', // Florida Division of Corporations (Sunbiz) document number. No contractor license: never say "licensed".
+  founded: '2023',
+  city: 'Sarasota',
   region: 'FL',
-  area: { en: 'Central Florida & Tampa', es: 'Florida Central y Tampa' } as L,
+  area: { en: 'Central Florida, Tampa & Sarasota', es: 'Florida Central, Tampa y Sarasota' } as L,
   url: 'https://lildaddy850.github.io/flo-union',
   stats: { homes: 500, years: 20 },
   payment: { en: 'cash, card, check, or Zelle', es: 'efectivo, tarjeta, cheque o Zelle' } as L,
   warranty: {
-    en: 'If anything we installed has a problem because of our work, we come back and fix it free. Storm damage, fallen trees, or someone else altering the gutters is not covered.',
-    es: 'Si algo que instalamos tiene un problema por nuestro trabajo, volvemos y lo arreglamos gratis. No cubre daños por tormentas, árboles caídos o cambios hechos por otra persona.',
+    en: 'Labor is covered for 5 to 10 years depending on the job, and the material carries a 20-year warranty. If anything we installed has a problem because of our work, we come back and fix it. Storm damage, fallen trees, or someone else altering the gutters is not covered.',
+    es: 'La mano de obra tiene garantía de 5 a 10 años según el trabajo, y el material tiene garantía de 20 años. Si algo que instalamos tiene un problema por nuestro trabajo, volvemos y lo arreglamos. No cubre daños por tormentas, árboles caídos o cambios hechos por otra persona.',
   } as L,
   sameAs: [] as string[], // TODO_JAY: Google Business Profile, Facebook page, etc.
   colors: [
@@ -36,8 +36,8 @@ export const why = [
     label: { en: 'Local', es: 'Locales' } as L,
     title: { en: 'We live here and we work here.', es: 'Vivimos aquí y trabajamos aquí.' } as L,
     body: {
-      en: 'Central Florida and Tampa. We answer our own phone, and the person you talk to is the person who shows up.',
-      es: 'Florida Central y Tampa. Contestamos nuestro propio teléfono, y la persona con la que habla es la que llega a su casa.',
+      en: 'Central Florida, Tampa, and Sarasota. We answer our own phone, and the person you talk to is the person who shows up.',
+      es: 'Florida Central, Tampa y Sarasota. Contestamos nuestro propio teléfono, y la persona con la que habla es la que llega a su casa.',
     } as L,
   },
   {
@@ -60,8 +60,8 @@ export const why = [
     label: { en: 'We actually care', es: 'Nos importa de verdad' } as L,
     title: { en: 'Hidden hangers, screws, cleanup. Fixed free if our work fails.', es: 'Soportes ocultos, tornillos, limpieza. Arreglo gratis si nuestro trabajo falla.' } as L,
     body: {
-      en: 'Screws, not spikes. Hangers you cannot see. The yard cleaner than we found it. And if anything we installed has a problem because of our work, we come back and fix it free.',
-      es: 'Tornillos, no clavos. Soportes que no se ven. El patio más limpio de lo que lo encontramos. Y si algo que instalamos falla por nuestro trabajo, volvemos y lo arreglamos gratis.',
+      en: 'Screws, not spikes. Hangers you cannot see. The yard cleaner than we found it. Labor warranty of 5 to 10 years, 20 years on materials.',
+      es: 'Tornillos, no clavos. Soportes que no se ven. El patio más limpio de lo que lo encontramos. Garantía de mano de obra de 5 a 10 años y de 20 años en materiales.',
     } as L,
   },
 ];

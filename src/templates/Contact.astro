@@ -8,8 +8,8 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const meta = {
-  en: { title: 'Contact Flo Union LLC | Call or Text 689-267-7320', description: 'Call or text 689-267-7320 for a free same-day seamless gutter estimate in Central Florida and Tampa. Open 7 days a week. Hablamos español.' },
-  es: { title: 'Contacto Flo Union LLC | Llame o mande un texto al 689-267-7320', description: 'Llame o mande un texto al 689-267-7320 para un estimado gratis de canaletas sin costura el mismo día en Florida Central y Tampa. Abierto los 7 días.' },
+  en: { title: 'Contact Flo Union LLC | Call or Text 689-267-7320', description: 'Call or text 689-267-7320 for a free same-day seamless gutter estimate in Central Florida, Tampa, and Sarasota. Open 7 days a week. Hablamos español.' },
+  es: { title: 'Contacto Flo Union LLC | Llame o mande un texto al 689-267-7320', description: 'Llame o mande un texto al 689-267-7320 para un estimado gratis de canaletas sin costura el mismo día en Florida Central, Tampa y Sarasota. Abierto los 7 días.' },
 }[lang];
 ---
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('contact', lang)} altPath={pageUrl('contact', other(lang))}>

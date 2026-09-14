@@ -174,8 +174,8 @@ export const services: Service[] = [
         a: { en: 'We set the schedule with the manager, keep driveways and walkways clear, and clean up every day.', es: 'Fijamos el cronograma con el administrador, mantenemos entradas y pasillos libres, y limpiamos todos los días.' },
       },
       {
-        q: { en: 'Are you licensed and insured?', es: '¿Tienen licencia y seguro?' },
-        a: { en: 'Yes. Licensed and insured.', es: 'Sí. Con licencia y seguro.' },
+        q: { en: 'Are you insured?', es: '¿Tienen seguro?' },
+        a: { en: 'Yes. Flo Union is a registered Florida LLC and carries insurance. Certificate of insurance on request.', es: 'Sí. Flo Union es una LLC registrada en Florida y tiene seguro. Certificado de seguro a pedido.' },
       },
     ],
   },

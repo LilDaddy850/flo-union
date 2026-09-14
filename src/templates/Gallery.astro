@@ -10,8 +10,8 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const meta = {
-  en: { title: 'Photo Gallery: Every Seamless Gutter Job | Flo Union LLC', description: 'Every photo from our seamless gutter jobs in Central Florida and Tampa, grouped by job: HOA communities, condos, new builds, tile roofs, bronze and white.' },
-  es: { title: 'Galería de fotos: cada trabajo de canaletas | Flo Union LLC', description: 'Todas las fotos de nuestras canaletas sin costura en Florida Central y Tampa, por trabajo: comunidades HOA, condominios, casas nuevas, techos de teja.' },
+  en: { title: 'Photo Gallery: Every Seamless Gutter Job | Flo Union LLC', description: 'Every photo from our seamless gutter jobs in Central Florida, Tampa, and Sarasota, grouped by job: HOA communities, condos, new builds, tile roofs.' },
+  es: { title: 'Galería de fotos: cada trabajo de canaletas | Flo Union LLC', description: 'Todas las fotos de nuestras canaletas sin costura en Florida Central, Tampa y Sarasota, por trabajo: comunidades HOA, condominios, casas nuevas, techos de teja.' },
 }[lang];
 
 // Every processed photo, grouped by job: the stem prefix (hoa, bronze, tile...) ties a photo to the project whose cover shares it.

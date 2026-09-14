@@ -41,8 +41,8 @@ export const faq: Faq[] = [
   {
     q: { en: 'What if something goes wrong later?', es: '¿Y si algo falla después?' },
     a: {
-      en: 'If anything we installed has a problem because of our work, we come back and fix it free. Storm damage, fallen trees, or someone else altering the gutters is not covered.',
-      es: 'Si algo que instalamos tiene un problema por nuestro trabajo, volvemos y lo arreglamos gratis. No cubre daños por tormentas, árboles caídos o cambios hechos por otra persona.',
+      en: 'Labor is covered for 5 to 10 years depending on the job, and the material carries a 20-year warranty. If anything we installed has a problem because of our work, we come back and fix it. Storm damage, fallen trees, or someone else altering the gutters is not covered.',
+      es: 'La mano de obra tiene garantía de 5 a 10 años según el trabajo, y el material tiene garantía de 20 años. Si algo que instalamos tiene un problema por nuestro trabajo, volvemos y lo arreglamos. No cubre daños por tormentas, árboles caídos o cambios hechos por otra persona.',
     },
   },
   {

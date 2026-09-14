@@ -75,4 +75,12 @@ export const cities: City[] = [
     { en: 'Tampa summers mean a storm almost every afternoon and a lot of water coming off the roof at once.', es: 'Los veranos en Tampa traen tormentas casi todas las tardes y mucha agua bajando del techo de golpe.' },
     { en: 'We come out to Tampa for homes and for HOA and commercial work.', es: 'Vamos a Tampa para casas y para trabajo de HOA y comercial.' },
   ], photos: ['hoa-02', 'condo-02', 'newbuild-04', 'bronze-01', 'tile-02', 'commercial-01'] },
+  { slug: 'sarasota', name: 'Sarasota', county: 'Sarasota', lines: [
+    { en: 'Sarasota is home base. Tile roofs, stucco, and Gulf storms that come in sideways.', es: 'Sarasota es nuestra base. Techos de teja, estuco y tormentas del Golfo que llegan de lado.' },
+    { en: 'Salt air eats cheap gutters. Seamless aluminum holds up.', es: 'El aire salado se come las canaletas baratas. El aluminio sin costura aguanta.' },
+  ], photos: ['tile-02', 'bronze-03', 'newbuild-04', 'hoa-02', 'detail-tile-eave', 'condo-01'] },
+  { slug: 'venice', name: 'Venice', county: 'Sarasota', lines: [
+    { en: 'Venice homes sit low and close to the water. Downspouts have to carry the rain away from the slab.', es: 'Las casas de Venice están bajas y cerca del agua. Los bajantes tienen que alejar la lluvia de la losa.' },
+    { en: 'Close to home base. Same-day estimates.', es: 'Cerca de nuestra base. Estimados el mismo día.' },
+  ], photos: ['ranch-palm', 'siding-02', 'tile-01', 'brick-02', 'detail-downspout', 'newbuild-06'] },
 ];

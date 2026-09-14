@@ -8,8 +8,8 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const meta = {
-  en: { title: 'Service Area: Central Florida & Tampa | Flo Union LLC', description: 'Seamless gutters across Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa and more. Free same-day estimates.' },
-  es: { title: 'Área de servicio: Florida Central y Tampa | Flo Union LLC', description: 'Canaletas sin costura en Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa y más. Estimados gratis el mismo día.' },
+  en: { title: 'Service Area: Central Florida, Tampa & Sarasota | Flo Union LLC', description: 'Seamless gutters across Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa and more. Free same-day estimates.' },
+  es: { title: 'Área de servicio: Florida Central, Tampa y Sarasota | Flo Union LLC', description: 'Canaletas sin costura en Orlando, Winter Park, Kissimmee, Sanford, Lakeland, Daytona Beach, Melbourne, Tampa y más. Estimados gratis el mismo día.' },
 }[lang];
 ---
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('area', lang)} altPath={pageUrl('area', other(lang))}>
