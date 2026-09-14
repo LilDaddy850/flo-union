@@ -68,11 +68,12 @@ export function startIntro(container: HTMLElement, canvas: HTMLCanvasElement, ov
       trigger: container,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.6,
+      scrub: 1.1,
       // Deterministic snapping: a forward flick always lands on the NEXT beat, a backward one on the PREVIOUS beat,
       // judged against the beat we last rested on, never from momentary scroll velocity (which can read backwards on
       // iOS momentum scrolling and throw the visitor back to the top).
-      snap: { snapTo: (value: number) => snapTarget(value), duration: { min: 0.3, max: 0.8 }, delay: 0.12, ease: 'power2.inOut', onComplete: (self) => settle(self.progress) },
+      // Slow, deliberate: each swipe plays out over about a second and a half so the animation can be watched.
+      snap: { snapTo: (value: number) => snapTarget(value), duration: { min: 1.2, max: 1.8 }, delay: 0.1, ease: 'power1.inOut', onComplete: (self) => settle(self.progress) },
       onLeave: () => settle(1),
       onLeaveBack: () => settle(0),
       invalidateOnRefresh: true,
