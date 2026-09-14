@@ -206,6 +206,9 @@ const es: Record<UiKey, string> = {
 
 export const ui: Record<Lang, Record<UiKey, string>> = { en, es };
 
+export const countyLabel = (lang: Lang, county: string): string =>
+  lang === 'es' ? `Condado de ${county}` : `${county} County`;
+
 export const t = (lang: Lang, key: UiKey, vars?: Record<string, string>): string => {
   let s: string = ui[lang][key];
   if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, v);

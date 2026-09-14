@@ -7,7 +7,7 @@ export const site = {
   owner: 'Jay Cabrera',
   phone: '689-267-7320',
   phoneE164: '+16892677320',
-  email: 'Jayflounion@gmail.com',
+  email: 'jayflounion@gmail.com',
   hours: { en: '7 days a week', es: 'los 7 días de la semana' } as L,
   license: '', // TODO_JAY: license number (and type). Renders nothing while blank.
   founded: '', // TODO_JAY: year Flo Union LLC started. Renders nothing while blank.

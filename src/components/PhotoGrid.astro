@@ -27,6 +27,10 @@ const { lang, stems, title, eyebrow, theme = 'dark' } = Astro.props;
   .cell { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 3; background: var(--surface); }
   .cell :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
   .cell:hover :global(img) { transform: scale(1.04); }
-  .cell:nth-child(6n + 1) { grid-column: span 2; aspect-ratio: 3 / 2; }
-  @media (max-width: 899px) { .grid { grid-template-columns: 1fr 1fr; } .cell:nth-child(6n + 1) { grid-column: span 2; } }
+  .cell:nth-child(6n + 1), .cell:nth-child(6n + 4), .cell:nth-child(6n + 5) { grid-column: span 2; aspect-ratio: 3 / 2; }
+  @media (max-width: 899px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: var(--s2); }
+    .cell:nth-child(n) { grid-column: auto; aspect-ratio: 4 / 3; }
+    .cell:nth-child(6n + 1), .cell:nth-child(6n) { grid-column: span 2; aspect-ratio: 3 / 2; }
+  }
 </style>

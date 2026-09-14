@@ -4,15 +4,16 @@ import type { Project } from '../data/projects';
 import { href, pageUrl, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
 
-interface Props { lang: Lang; items: Project[]; link?: boolean; showAll?: boolean; }
-const { lang, items, link = true, showAll = false } = Astro.props;
+interface Props { lang: Lang; items: Project[]; link?: boolean; showAll?: boolean; as?: 'h1' | 'h2'; }
+const { lang, items, link = true, showAll = false, as = 'h2' } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
+const Heading = as;
 ---
 <section class="section theme-dark projects" id="projects">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="eyebrow">{t(lang, 'projects.eyebrow')}</p>
-      <h2 class="h-1">{t(lang, 'projects.title')}</h2>
+      <Heading class:list={[as === 'h1' ? 'h-hero' : 'h-1']}>{t(lang, 'projects.title')}</Heading>
     </div>
 
     <div class="scatter">
@@ -57,15 +58,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
   /* the scatter: six slot patterns cycling */
   .pj-1 { grid-column: 1 / 8; }
   .pj-1 .pj-media { aspect-ratio: 3 / 2; }
-  .pj-2 { grid-column: 8 / 13; margin-top: clamp(40px, 8vw, 140px); }
+  .pj-2 { grid-column: 8 / 13; margin-top: clamp(32px, 6vw, 96px); }
   .pj-2 .pj-media { aspect-ratio: 4 / 5; }
-  .pj-3 { grid-column: 2 / 7; margin-top: clamp(0px, 2vw, 24px); }
+  .pj-3 { grid-column: 2 / 7; }
   .pj-3 .pj-media { aspect-ratio: 4 / 5; }
-  .pj-4 { grid-column: 7 / 13; margin-top: clamp(48px, 9vw, 160px); }
+  .pj-4 { grid-column: 7 / 13; margin-top: clamp(40px, 7vw, 120px); }
   .pj-4 .pj-media { aspect-ratio: 3 / 2; }
   .pj-5 { grid-column: 1 / 7; }
   .pj-5 .pj-media { aspect-ratio: 5 / 4; }
-  .pj-6 { grid-column: 7 / 12; margin-top: clamp(32px, 6vw, 110px); }
+  .pj-6 { grid-column: 7 / 12; margin-top: clamp(24px, 5vw, 80px); }
   .pj-6 .pj-media { aspect-ratio: 4 / 5; }
 
   .all { margin-top: var(--s5); }

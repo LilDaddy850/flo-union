@@ -3,15 +3,17 @@ import Photo from './Photo.astro';
 import { services } from '../data/services';
 import { href, pageUrl, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
-interface Props { lang: Lang; }
-const { lang } = Astro.props;
+interface Props { lang: Lang; heading?: boolean; }
+const { lang, heading = true } = Astro.props;
 ---
 <section class="section theme-light" id="services">
   <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">{t(lang, 'services.eyebrow')}</p>
-      <h2 class="h-1">{t(lang, 'services.title')}</h2>
-    </div>
+    {heading && (
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'services.eyebrow')}</p>
+        <h2 class="h-1">{t(lang, 'services.title')}</h2>
+      </div>
+    )}
     <div class="rows">
       {services.map((s, i) => (
         <a class:list={['row reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]} href={href(pageUrl('services', lang, s.slug[lang]))}>

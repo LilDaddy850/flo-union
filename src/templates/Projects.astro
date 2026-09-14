@@ -15,13 +15,7 @@ const meta = {
 }[lang];
 ---
 <Base lang={lang} title={meta.title} description={meta.description} path={pageUrl('projects', lang)} altPath={pageUrl('projects', other(lang))}>
-  <section class="theme-dark page-head">
-    <div class="wrap">
-      <p class="eyebrow">{t(lang, 'projects.eyebrow')}</p>
-      <h1 class="h-hero">{t(lang, 'projects.title')}</h1>
-    </div>
-  </section>
-  <ProjectsScatter lang={lang} items={projects} link={false} />
+  <ProjectsScatter lang={lang} items={projects} link={false} as="h1" />
   <PhotoGrid lang={lang} stems={details} eyebrow={t(lang, 'projects.details')} title={t(lang, 'projects.detailsSub')} theme="light" />
   <CtaBand lang={lang} />
 </Base>

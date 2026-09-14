@@ -8,7 +8,7 @@ import { site, process } from '../data/site';
 import { services } from '../data/services';
 import { faq } from '../data/faq';
 import { absUrl, href, other, pageUrl, type Lang } from '../i18n/routes';
-import { t } from '../i18n/ui';
+import { t, countyLabel } from '../i18n/ui';
 
 interface Props { lang: Lang; city: City; }
 const { lang, city } = Astro.props;
@@ -32,7 +32,7 @@ const jsonLd = [{
 <Base lang={lang} title={meta.title} description={meta.description} path={path} altPath={altPath} jsonLd={jsonLd}>
   <section class="section theme-dark city-hero">
     <div class="wrap">
-      <p class="eyebrow">{t(lang, 'city.eyebrow', { city: city.name })} · {city.county} {t(lang, 'area.county')}</p>
+      <p class="eyebrow">{t(lang, 'city.eyebrow', { city: city.name })} · {countyLabel(lang, city.county)}</p>
       <h1 class="h-hero">{h1}</h1>
       <p class="lead">{t(lang, 'city.intro')}</p>
       <div class="lines">

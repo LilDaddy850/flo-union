@@ -1,9 +1,9 @@
 ---
 import { cities } from '../data/cities';
 import { href, pageUrl, type Lang } from '../i18n/routes';
-import { t } from '../i18n/ui';
-interface Props { lang: Lang; }
-const { lang } = Astro.props;
+import { t, countyLabel } from '../i18n/ui';
+interface Props { lang: Lang; heading?: boolean; }
+const { lang, heading = true } = Astro.props;
 
 const groups = new Map<string, typeof cities>();
 for (const c of cities) {
@@ -13,15 +13,17 @@ for (const c of cities) {
 ---
 <section class="section theme-light" id="area">
   <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">{t(lang, 'area.eyebrow')}</p>
-      <h2 class="h-1">{t(lang, 'area.title')}</h2>
-      <p class="lead">{t(lang, 'area.sub')}</p>
-    </div>
+    {heading && (
+      <div class="section-head reveal">
+        <p class="eyebrow">{t(lang, 'area.eyebrow')}</p>
+        <h2 class="h-1">{t(lang, 'area.title')}</h2>
+        <p class="lead">{t(lang, 'area.sub')}</p>
+      </div>
+    )}
     <div class="counties">
       {[...groups.entries()].map(([county, list], i) => (
         <div class:list={['county reveal', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
-          <p class="eyebrow county-name">{county} {t(lang, 'area.county')}</p>
+          <p class="eyebrow county-name">{countyLabel(lang, county)}</p>
           <ul>
             {list.map((c) => <li><a href={href(pageUrl('area', lang, c.slug))}>{c.name}</a></li>)}
           </ul>
