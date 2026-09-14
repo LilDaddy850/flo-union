@@ -4,9 +4,12 @@ import wordmark from '../assets/brand/wordmark.png';
 import { site } from '../data/site';
 import { href, other, pageUrl, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
+import { getImage } from 'astro:assets';
 
 interface Props { lang: Lang; altPath: string; }
 const { lang, altPath } = Astro.props;
+const markImg = await getImage({ src: mark, width: 120, format: 'webp' });
+const wordImg = await getImage({ src: wordmark, width: Math.round(42 * wordmark.width / wordmark.height), format: 'webp' });
 
 const nav = [
   { key: 'services', label: t(lang, 'nav.services') },
@@ -20,8 +23,8 @@ const nav = [
 <header class="site-header">
   <div class="wrap head-row">
     <a class="logo" href={href(pageUrl('home', lang))} aria-label={site.name}>
-      <img src={mark.src} width={mark.width} height={mark.height} alt="" class="logo-mark" />
-      <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt={site.name} class="logo-word" />
+      <img src={markImg.src} width={markImg.attributes.width} height={markImg.attributes.height} alt="" class="logo-mark" />
+      <img src={wordImg.src} width={wordImg.attributes.width} height={wordImg.attributes.height} alt={site.name} class="logo-word" />
     </a>
 
     <nav class="head-nav" aria-label="Main">
@@ -32,13 +35,13 @@ const nav = [
       <a class="lang" href={href(altPath)} lang={other(lang)} aria-label={t(lang, 'lang.switch')}>{t(lang, 'lang.switchShort')}</a>
       <a class="phone" href={`tel:${site.phoneE164}`}>{site.phone}</a>
       <a class="btn call" href={`tel:${site.phoneE164}`}>{t(lang, 'cta.call')}</a>
-      <label for="menu-toggle" class="burger" aria-label={t(lang, 'nav.menu')}>
+      <label for="menu-toggle" class="burger">
         <span></span><span></span><span></span>
       </label>
     </div>
   </div>
 
-  <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true" />
+  <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label={t(lang, 'nav.menu')} />
   <div class="menu-panel">
     <div class="wrap">
       <nav aria-label="Mobile">
@@ -103,11 +106,13 @@ const nav = [
 
   @media (min-width: 1100px) {
     .site-header { position: sticky; top: 0; }
+    .menu-toggle, .menu-toggle:checked ~ .menu-panel { display: none; }
   }
   @media (max-width: 1099px) {
     .head-nav { display: none; }
     .phone { display: none; }
     .burger { display: flex; }
+    .site-header:has(.menu-toggle:focus-visible) .burger { outline: 2px solid var(--orange); outline-offset: 2px; }
     .site-header:has(.menu-toggle:checked) .burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .site-header:has(.menu-toggle:checked) .burger span:nth-child(2) { opacity: 0; }
     .site-header:has(.menu-toggle:checked) .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }

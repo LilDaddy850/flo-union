@@ -5,6 +5,9 @@ import '@fontsource/barlow/500.css';
 import '@fontsource/barlow-semi-condensed/600.css';
 import '@fontsource/barlow-semi-condensed/700.css';
 import '@fontsource/barlow-semi-condensed/800.css';
+import fontHead from '@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-800-normal.woff2?url';
+import fontBody from '@fontsource/barlow/files/barlow-latin-400-normal.woff2?url';
+import fontLabel from '@fontsource/michroma/files/michroma-latin-400-normal.woff2?url';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import type { Lang } from '../i18n/routes';
@@ -30,6 +33,9 @@ const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={fontHead} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontLabel} as="font" type="font/woff2" crossorigin />
     <Seo {lang} {title} {description} {path} {altPath} {jsonLd} />
   </head>
   <body>

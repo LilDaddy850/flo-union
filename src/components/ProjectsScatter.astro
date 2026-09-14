@@ -8,6 +8,7 @@ interface Props { lang: Lang; items: Project[]; link?: boolean; showAll?: boolea
 const { lang, items, link = true, showAll = false, as = 'h2' } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
 const Heading = as;
+const CapTag = as === 'h1' ? 'h2' : 'h3';
 ---
 <section class="section theme-dark projects" id="projects">
   <div class="wrap">
@@ -27,7 +28,7 @@ const Heading = as;
               </div>
               <div class="pj-cap">
                 <span class="pj-n">{pad(p.n)}</span>
-                <h3 class="h-3">{p.title[lang]}</h3>
+                <CapTag class="h-3">{p.title[lang]}</CapTag>
                 <p class="small dim">{p.where[lang]} · {p.year}</p>
               </div>
             </Tag>

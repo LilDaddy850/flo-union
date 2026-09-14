@@ -9,11 +9,13 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const poster = await getImage({ src: posterSrc, width: 720, format: 'webp', quality: 68 });
+const markImg = await getImage({ src: mark, width: 320, format: 'webp' });
 ---
+<link rel="preload" as="image" href={poster.src} fetchpriority="high" />
 <section class="hero theme-dark">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <img src={mark.src} width={mark.width} height={mark.height} alt="" class="hero-mark" />
+      <img src={markImg.src} width={markImg.attributes.width} height={markImg.attributes.height} alt="" class="hero-mark" />
       <p class="eyebrow hero-eyebrow">{t(lang, 'hero.eyebrow')}</p>
       <h1 class="h-hero">{t(lang, 'hero.h1')}</h1>
       <p class="lead hero-sub">{t(lang, 'hero.sub')}</p>

@@ -1,5 +1,6 @@
 ---
 import lockup from '../assets/brand/lockup.png';
+import { getImage } from 'astro:assets';
 import { site } from '../data/site';
 import { services } from '../data/services';
 import { cities } from '../data/cities';
@@ -9,12 +10,13 @@ import { t } from '../i18n/ui';
 interface Props { lang: Lang; altPath: string; }
 const { lang, altPath } = Astro.props;
 const year = new Date().getFullYear();
+const lockupImg = await getImage({ src: lockup, width: 520, format: 'webp' });
 ---
 <footer class="site-footer theme-dark">
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img src={lockup.src} width={lockup.width} height={lockup.height} alt={site.name} class="foot-logo" />
+        <img src={lockupImg.src} width={lockupImg.attributes.width} height={lockupImg.attributes.height} alt={site.name} class="foot-logo" />
         <a class="foot-phone" href={`tel:${site.phoneE164}`}>{site.phone}</a>
         <a class="foot-email" href={`mailto:${site.email}`}>{site.email}</a>
         <p class="small dim">{t(lang, 'footer.hours')} · {t(lang, 'footer.spanish')}</p>
