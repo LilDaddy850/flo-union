@@ -82,6 +82,13 @@ const lock = await getImage({ src: lockup, width: 800, format: 'webp' });
     const ok = hasGl && matchMedia('(prefers-reduced-motion: no-preference)').matches && !nav.connection?.saveData && (nav.deviceMemory ?? 8) >= 3 && !skipped && !location.hash;
     if (!ok) {
       section.classList.add('intro-off');
+      // The intro is 300svh tall, so any scroll position the browser remembered for this page (reload, back button)
+      // was measured with it present. Without the intro that position lands mid-page: start at the top instead.
+      if (skipped && !location.hash) {
+        try { history.scrollRestoration = 'manual'; } catch {}
+        window.scrollTo(0, 0);
+        addEventListener('pageshow', () => window.scrollTo(0, 0), { once: true });
+      }
     } else {
       const q = (s: string) => section.querySelector(s) as HTMLElement | null;
       const skip = q('.intro-skip');
