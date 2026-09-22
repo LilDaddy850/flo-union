@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://lildaddy850.github.io/flo-union/sitemap-index.xml

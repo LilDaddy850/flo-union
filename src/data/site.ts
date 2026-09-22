@@ -1,4 +1,4 @@
-import type { L } from '../i18n/routes';
+import { BASE, type L } from '../i18n/routes';
 
 /** Business facts. Every claim on the site comes from here. Blank strings render nothing. */
 export const site = {
@@ -14,7 +14,7 @@ export const site = {
   city: 'Sarasota',
   region: 'FL',
   area: { en: 'Central Florida, Tampa & Sarasota', es: 'Florida Central, Tampa y Sarasota' } as L,
-  url: 'https://lildaddy850.github.io/flo-union',
+  url: import.meta.env.SITE.replace(/\/$/, '') + BASE, // origin + base path, no trailing slash
   stats: { homes: 500, years: 20 },
   payment: { en: 'cash, card, check, or Zelle', es: 'efectivo, tarjeta, cheque o Zelle' } as L,
   warranty: {

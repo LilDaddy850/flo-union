@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: withastro/action@v6
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
 
   deploy:
     needs: build
