@@ -100,8 +100,10 @@ const lock = await getImage({ src: lockup, width: 800, format: 'webp' });
         try { sessionStorage.setItem('flo-intro', 'skip'); } catch {}
         window.scrollTo({ top: section.offsetTop + section.offsetHeight, behavior: 'smooth' });
       });
-      const idle = (fn: () => void) => ('requestIdleCallback' in window ? (window as any).requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 600));
-      const later = () => setTimeout(() => idle(boot), 700);
+      // Boot well after the page is interactive: the poster is already on screen, so nothing is lost by waiting,
+      // and the 3D bundle never competes with the first paint on slow phones.
+      const idle = (fn: () => void) => ('requestIdleCallback' in window ? (window as any).requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 800));
+      const later = () => setTimeout(() => idle(boot), 1800);
       if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
     }
   }
