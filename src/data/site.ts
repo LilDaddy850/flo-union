@@ -7,7 +7,7 @@ export const site = {
   owner: 'Jay Cabrera',
   phone: '689-267-7320',
   phoneE164: '+16892677320',
-  email: 'jayflounion@gmail.com',
+  email: 'jay@flounion.com',
   hours: { en: '7 days a week', es: 'los 7 días de la semana' } as L,
   license: 'L23000363697', // Florida Division of Corporations (Sunbiz) document number. No contractor license: never say "licensed".
   founded: '2023',
